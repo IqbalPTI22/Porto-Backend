@@ -1,81 +1,144 @@
-# Portfolio Backend (ElysiaJS + PostgreSQL + Drizzle)
+<h1 align="center">🚀 Portfolio Backend API</h1>
 
-Backend modern untuk aplikasi portfolio dengan admin dashboard. Fokus pada API CRUD untuk data project, skill, dan profile.
+<p align="center">
+   <b>Modern, robust, and blazing-fast backend for your portfolio dashboard.<br>
+   Built with <a href="https://elysiajs.com/">ElysiaJS</a>, <a href="https://www.postgresql.org/">PostgreSQL</a>, and <a href="https://orm.drizzle.team/">Drizzle ORM</a>.</b>
+</p>
 
-## Tech Stack
+---
+
+## 🛠️ Tech Stack
 
 - Node.js + TypeScript
-- ElysiaJS
-- PostgreSQL
-- Drizzle ORM
+- ElysiaJS (Express-style, ultra-fast web framework)
+- PostgreSQL (Relational Database)
+- Drizzle ORM (Type-safe SQL ORM)
 
-## Struktur Folder
+---
 
-- src/controllers: Business logic CRUD
-- src/routes: Definisi endpoint REST
-- src/database: Koneksi database
-- src/schema: Definisi tabel Drizzle
-- src/utils: Helper utilitas
-- index.ts: Entry point aplikasi
+## 📁 Folder Structure
 
-## Endpoint API
+- `src/controllers` — Business logic (CRUD)
+- `src/routes` — REST endpoint definitions
+- `src/database` — Database connection & seed
+- `src/schema` — Drizzle table definitions
+- `src/utils` — Utility helpers
+- `index.ts` — App entry point
+
+---
+
+## 🔥 API Endpoints
 
 ### Projects
-
-- GET /projects
-- GET /projects/:id
-- POST /projects
-- PUT /projects/:id
-- DELETE /projects/:id
+| Method | Endpoint           | Description         |
+|--------|--------------------|--------------------|
+| GET    | /projects          | List all projects  |
+| GET    | /projects/:id      | Get project by ID  |
+| POST   | /projects          | Create project     |
+| PUT    | /projects/:id      | Update project     |
+| DELETE | /projects/:id      | Delete project     |
 
 ### Skills
-
-- GET /skills
-- GET /skills/:id
-- POST /skills
-- PUT /skills/:id
-- DELETE /skills/:id
+| Method | Endpoint           | Description         |
+|--------|--------------------|--------------------|
+| GET    | /skills            | List all skills    |
+| GET    | /skills/:id        | Get skill by ID    |
+| POST   | /skills            | Create skill       |
+| PUT    | /skills/:id        | Update skill       |
+| DELETE | /skills/:id        | Delete skill       |
 
 ### Profile
+| Method | Endpoint           | Description         |
+|--------|--------------------|--------------------|
+| GET    | /profile           | List all profiles  |
+| GET    | /profile/:id       | Get profile by ID  |
+| POST   | /profile           | Create profile     |
+| PUT    | /profile/:id       | Update profile     |
+| DELETE | /profile/:id       | Delete profile     |
 
-- GET /profile
-- GET /profile/:id
-- POST /profile
-- PUT /profile/:id
-- DELETE /profile/:id
+---
 
-## Setup
+## 🚦 Quick Start & Installation
 
-1. Install dependency
-   - npm install
-2. Salin environment file
-   - copy .env.example .env
-3. Isi DATABASE_URL di .env
-4. Generate migration
-   - npm run db:generate
-5. Push schema ke PostgreSQL
-   - npm run db:push
+### Prerequisites
+- Node.js v18+
+- PostgreSQL (running locally or remote)
 
-## Menjalankan Server
+### 1. Clone the Repository
 
-- Development: npm run dev
-- Build: npm run build
-- Start production: npm run start
+```bash
+git clone https://github.com/IqbalPTI22/Porto-Backend.git
+cd Porto-Backend
+```
 
-Server berjalan di http://localhost:3000 secara default.
+### 2. Install Dependencies
 
-## Dashboard Sederhana
+```bash
+npm install
+```
 
-- Buka `http://localhost:3000/dashboard` untuk UI admin sederhana.
-- Dashboard dapat melakukan create, read, update, dan delete untuk projects, skills, dan profile.
-- Semua aksi di dashboard langsung memanggil endpoint backend yang sama.
+### 3. Environment Setup
 
-## Koneksi Frontend React
+- Copy the example environment file:
+   ```bash
+   cp .env.example .env
+   # or (Windows)
+   copy .env.example .env
+   ```
+- Edit `.env` and set your `DATABASE_URL` to match your PostgreSQL instance.
 
-CORS sudah diaktifkan pada server sehingga API dapat diakses dari frontend React/Vite.
+### 4. Database Migration & Seeding
 
-## Testing CRUD Cepat
+- Generate migration (if needed):
+   ```bash
+   npm run db:generate
+   ```
+- Push schema to PostgreSQL:
+   ```bash
+   npm run db:push
+   ```
+- (Optional) Seed initial data:
+   ```bash
+   npm run seed
+   ```
 
-- Gunakan file `api-requests.http` untuk mencoba semua endpoint (health + CRUD projects/skills/profile).
-- Jalankan server dulu dengan `npm run dev`, lalu eksekusi request satu per satu dari editor.
-- Ubah variabel `@projectId`, `@skillId`, dan `@profileId` sesuai data yang ada di database.
+### 5. Run the Server
+
+```bash
+npm run dev
+```
+
+Server will run at [http://localhost:3000](http://localhost:3000) by default.
+
+---
+
+
+## 🖥️ Dashboard
+
+- Open `http://localhost:3000/dashboard` for a simple admin UI.
+- The dashboard supports create, read, update, and delete for projects, skills, and profile.
+- All dashboard actions directly call the backend API endpoints.
+
+---
+
+## ⚡ Frontend Integration
+
+CORS is enabled by default, so you can connect your React/Vite frontend directly to this API.
+
+---
+
+## 🧪 Quick API Testing
+
+- Use the `api-requests.http` file to try all endpoints (health + CRUD for projects/skills/profile).
+- Start the server with `npm run dev`, then execute requests from your editor (VS Code recommended).
+- Adjust variables like `@projectId`, `@skillId`, and `@profileId` as needed.
+
+---
+
+## 🤝 Contributing
+
+Pull requests and issues are welcome!
+
+---
+
+> The dashboard frontend is a separate project and not included in this repository.
