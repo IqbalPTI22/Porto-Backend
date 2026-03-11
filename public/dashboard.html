@@ -1,0 +1,848 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio Admin Dashboard</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap");
+
+      :root {
+        --bg: #f3f5fa;
+        --surface: #ffffff;
+        --surface-soft: #f9fbff;
+        --text: #12203a;
+        --muted: #5f6e84;
+        --line: #d8dfec;
+        --primary: #1459c7;
+        --primary-2: #0f8f77;
+        --danger: #b42318;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        font-family: "Outfit", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 10% 5%, #d2def8 0%, transparent 34%),
+          radial-gradient(circle at 95% 15%, #d7f4ef 0%, transparent 30%),
+          var(--bg);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 270px 1fr;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        border-right: 1px solid var(--line);
+        background: linear-gradient(155deg, #f6f9ff 0%, #ebf4f4 100%);
+        padding: 24px 18px;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 28px;
+      }
+
+      .brand-dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: linear-gradient(145deg, #1459c7, #0f8f77);
+      }
+
+      .brand h1 {
+        margin: 0;
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 1.1rem;
+      }
+
+      .menu {
+        display: grid;
+        gap: 8px;
+      }
+
+      .menu a {
+        text-decoration: none;
+        color: var(--text);
+        border: 1px solid transparent;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.65);
+        font-weight: 500;
+      }
+
+      .menu a:hover {
+        border-color: var(--line);
+        background: #fff;
+      }
+
+      .note {
+        margin-top: 16px;
+        font-size: 0.84rem;
+        color: var(--muted);
+      }
+
+      .main {
+        padding: 20px 22px 24px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .topbar-title {
+        margin: 0;
+        font-family: "Space Grotesk", sans-serif;
+      }
+
+      .badge {
+        padding: 8px 12px;
+        border: 1px solid #bbe6db;
+        border-radius: 999px;
+        background: #e8f9f4;
+        color: #0a6b56;
+        font-size: 0.9rem;
+        white-space: nowrap;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(180px, 1fr));
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .stat {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--surface);
+        padding: 14px;
+      }
+
+      .stat p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .stat strong {
+        display: block;
+        margin-top: 6px;
+        font-size: 1.5rem;
+      }
+
+      .panel {
+        margin-top: 16px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--surface);
+        box-shadow: 0 14px 40px rgba(17, 34, 68, 0.05);
+        overflow: hidden;
+      }
+
+      .panel-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        background: var(--surface-soft);
+      }
+
+      .panel-head h2 {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .panel-content {
+        padding: 14px;
+      }
+
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.92rem;
+      }
+
+      .data-table th,
+      .data-table td {
+        text-align: left;
+        padding: 9px 8px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      .data-table th {
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .tag {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: #edf4ff;
+        border: 1px solid #d7e3f8;
+        font-size: 0.78rem;
+      }
+
+      .grid-2,
+      .grid-3 {
+        display: grid;
+        gap: 10px;
+      }
+
+      .grid-2 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      label {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 0.82rem;
+        color: var(--muted);
+      }
+
+      input,
+      textarea,
+      button {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 9px 10px;
+        font: inherit;
+      }
+
+      textarea {
+        min-height: 78px;
+        resize: vertical;
+      }
+
+      .action-row {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: linear-gradient(130deg, #1459c7, #0f8f77);
+        color: #fff;
+        border: none;
+      }
+
+      .btn-soft {
+        background: #fff;
+      }
+
+      .btn-danger {
+        background: #fff3f2;
+        color: var(--danger);
+        border-color: #f2c0bc;
+      }
+
+      .mono {
+        font-family: "Consolas", "Courier New", monospace;
+      }
+
+      .muted {
+        color: var(--muted);
+      }
+
+      @media (max-width: 1100px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: static;
+          height: auto;
+          border-right: none;
+          border-bottom: 1px solid var(--line);
+        }
+      }
+
+      @media (max-width: 840px) {
+        .stats,
+        .grid-2,
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+
+        .action-row {
+          flex-wrap: wrap;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-dot"></span>
+          <h1>Admin Console</h1>
+        </div>
+        <nav class="menu">
+          <a href="#overview">Overview</a>
+          <a href="#projects">Manage Projects</a>
+          <a href="#skills">Manage Skills</a>
+          <a href="#profile">Manage Profile</a>
+        </nav>
+        <p class="note">
+          Satu dashboard untuk kelola isi portfolio. Semua aksi langsung menulis ke tabel backend.
+        </p>
+      </aside>
+
+      <main class="main">
+        <div class="topbar" id="overview">
+          <h1 class="topbar-title">Portfolio Dashboard</h1>
+          <div id="api-status" class="badge">Checking API...</div>
+        </div>
+
+        <section class="stats">
+          <article class="stat">
+            <p>Total Projects</p>
+            <strong id="count-projects">0</strong>
+          </article>
+          <article class="stat">
+            <p>Total Skills</p>
+            <strong id="count-skills">0</strong>
+          </article>
+          <article class="stat">
+            <p>Total Profile Rows</p>
+            <strong id="count-profile">0</strong>
+          </article>
+        </section>
+
+        <section class="panel" id="projects">
+          <div class="panel-head">
+            <h2>Projects Table</h2>
+            <button class="btn-soft" id="refresh-projects">Refresh</button>
+          </div>
+          <div class="panel-content">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Project URL</th>
+                </tr>
+              </thead>
+              <tbody id="projects-body"></tbody>
+            </table>
+
+            <h3>Create Project</h3>
+            <div class="grid-2">
+              <div>
+                <label>Title</label>
+                <input id="project-title" placeholder="Project title" />
+              </div>
+              <div>
+                <label>Project URL</label>
+                <input id="project-projectUrl" placeholder="https://example.com" />
+              </div>
+            </div>
+            <label>Description</label>
+            <textarea id="project-description" placeholder="Project description"></textarea>
+            <label>Image URL</label>
+            <input id="project-imageUrl" placeholder="https://example.com/image.jpg" />
+            <div class="action-row">
+              <button class="btn-primary" id="create-project">Create Project</button>
+            </div>
+
+            <h3>Update or Delete Project</h3>
+            <div class="grid-3">
+              <div>
+                <label>Project ID</label>
+                <input id="project-id" type="number" min="1" placeholder="1" />
+              </div>
+              <div>
+                <label>New Title</label>
+                <input id="project-new-title" placeholder="Optional" />
+              </div>
+              <div>
+                <label>New Description</label>
+                <input id="project-new-description" placeholder="Optional" />
+              </div>
+            </div>
+            <div class="action-row">
+              <button class="btn-soft" id="update-project">Update</button>
+              <button class="btn-danger" id="delete-project">Delete</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="skills">
+          <div class="panel-head">
+            <h2>Skills Table</h2>
+            <button class="btn-soft" id="refresh-skills">Refresh</button>
+          </div>
+          <div class="panel-content">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Level</th>
+                  <th>Category</th>
+                </tr>
+              </thead>
+              <tbody id="skills-body"></tbody>
+            </table>
+
+            <h3>Create Skill</h3>
+            <div class="grid-3">
+              <div>
+                <label>Name</label>
+                <input id="skill-name" placeholder="TypeScript" />
+              </div>
+              <div>
+                <label>Level</label>
+                <input id="skill-level" placeholder="Advanced" />
+              </div>
+              <div>
+                <label>Category</label>
+                <input id="skill-category" placeholder="Backend" />
+              </div>
+            </div>
+            <div class="action-row">
+              <button class="btn-primary" id="create-skill">Create Skill</button>
+            </div>
+
+            <h3>Update or Delete Skill</h3>
+            <div class="grid-3">
+              <div>
+                <label>Skill ID</label>
+                <input id="skill-id" type="number" min="1" placeholder="1" />
+              </div>
+              <div>
+                <label>New Name</label>
+                <input id="skill-new-name" placeholder="Optional" />
+              </div>
+              <div>
+                <label>New Level</label>
+                <input id="skill-new-level" placeholder="Optional" />
+              </div>
+            </div>
+            <div class="action-row">
+              <button class="btn-soft" id="update-skill">Update</button>
+              <button class="btn-danger" id="delete-skill">Delete</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel" id="profile">
+          <div class="panel-head">
+            <h2>Profile Table</h2>
+            <button class="btn-soft" id="refresh-profile">Refresh</button>
+          </div>
+          <div class="panel-content">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Full Name</th>
+                  <th>Headline</th>
+                  <th>Email</th>
+                  <th>Location</th>
+                </tr>
+              </thead>
+              <tbody id="profile-body"></tbody>
+            </table>
+
+            <h3>Create Profile</h3>
+            <div class="grid-2">
+              <div>
+                <label>Full Name</label>
+                <input id="profile-fullName" placeholder="John Developer" />
+              </div>
+              <div>
+                <label>Headline</label>
+                <input id="profile-headline" placeholder="Full Stack Developer" />
+              </div>
+            </div>
+            <label>Bio</label>
+            <textarea id="profile-bio" placeholder="Bio"></textarea>
+            <div class="grid-3">
+              <div>
+                <label>Email</label>
+                <input id="profile-email" placeholder="john@example.com" />
+              </div>
+              <div>
+                <label>Location</label>
+                <input id="profile-location" placeholder="Jakarta" />
+              </div>
+              <div>
+                <label>Avatar URL</label>
+                <input id="profile-avatarUrl" placeholder="https://example.com/avatar.jpg" />
+              </div>
+            </div>
+            <div class="action-row">
+              <button class="btn-primary" id="create-profile">Create Profile</button>
+            </div>
+
+            <h3>Update or Delete Profile</h3>
+            <div class="grid-3">
+              <div>
+                <label>Profile ID</label>
+                <input id="profile-id" type="number" min="1" placeholder="1" />
+              </div>
+              <div>
+                <label>New Headline</label>
+                <input id="profile-new-headline" placeholder="Optional" />
+              </div>
+              <div>
+                <label>New Location</label>
+                <input id="profile-new-location" placeholder="Optional" />
+              </div>
+            </div>
+            <div class="action-row">
+              <button class="btn-soft" id="update-profile">Update</button>
+              <button class="btn-danger" id="delete-profile">Delete</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const api = {
+        async request(path, method = "GET", body) {
+          const response = await fetch(path, {
+            method,
+            headers: { "Content-Type": "application/json" },
+            body: body ? JSON.stringify(body) : undefined,
+          });
+
+          const text = await response.text();
+          let data = text;
+          try {
+            data = JSON.parse(text);
+          } catch {
+            data = text;
+          }
+
+          return { status: response.status, data };
+        },
+      };
+
+      const required = (value) => typeof value === "string" && value.trim() !== "";
+      const shortText = (value, max = 60) => {
+        if (!value) return "-";
+        return value.length > max ? `${value.slice(0, max)}...` : value;
+      };
+
+      const setApiStatus = (ok, text) => {
+        const statusEl = document.getElementById("api-status");
+        statusEl.textContent = text;
+        if (!ok) {
+          statusEl.style.borderColor = "#f2c0bc";
+          statusEl.style.background = "#fff3f2";
+          statusEl.style.color = "#8a1c14";
+        }
+      };
+
+      const fillTable = (targetId, rows, columns) => {
+        const target = document.getElementById(targetId);
+        target.innerHTML = "";
+
+        if (!Array.isArray(rows) || rows.length === 0) {
+          const row = document.createElement("tr");
+          row.innerHTML = `<td colspan="${columns.length}" class="muted">No data</td>`;
+          target.appendChild(row);
+          return;
+        }
+
+        rows.forEach((item) => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = columns
+            .map((column) => `<td>${column(item)}</td>`)
+            .join("");
+          target.appendChild(tr);
+        });
+      };
+
+      const parseId = (id) => Number.parseInt(id, 10);
+
+      let cachedProjects = [];
+      let cachedSkills = [];
+      let cachedProfile = [];
+
+      async function refreshHealth() {
+        const result = await api.request("/health");
+        if (result.status === 200) {
+          setApiStatus(true, `API Ready: ${result.data.message}`);
+        } else {
+          setApiStatus(false, "API not reachable");
+        }
+      }
+
+      async function refreshProjects() {
+        const result = await api.request("/projects");
+        cachedProjects = Array.isArray(result.data) ? result.data : [];
+        document.getElementById("count-projects").textContent = String(cachedProjects.length);
+        fillTable("projects-body", cachedProjects, [
+          (item) => `<span class="tag mono">${item.id}</span>`,
+          (item) => shortText(item.title, 28),
+          (item) => shortText(item.description, 56),
+          (item) => `<a href="${item.projectUrl}" target="_blank" rel="noreferrer">Open</a>`,
+        ]);
+      }
+
+      async function refreshSkills() {
+        const result = await api.request("/skills");
+        cachedSkills = Array.isArray(result.data) ? result.data : [];
+        document.getElementById("count-skills").textContent = String(cachedSkills.length);
+        fillTable("skills-body", cachedSkills, [
+          (item) => `<span class="tag mono">${item.id}</span>`,
+          (item) => shortText(item.name, 22),
+          (item) => shortText(item.level, 22),
+          (item) => shortText(item.category, 22),
+        ]);
+      }
+
+      async function refreshProfile() {
+        const result = await api.request("/profile");
+        cachedProfile = Array.isArray(result.data) ? result.data : [];
+        document.getElementById("count-profile").textContent = String(cachedProfile.length);
+        fillTable("profile-body", cachedProfile, [
+          (item) => `<span class="tag mono">${item.id}</span>`,
+          (item) => shortText(item.fullName, 22),
+          (item) => shortText(item.headline, 30),
+          (item) => shortText(item.email, 26),
+          (item) => shortText(item.location, 22),
+        ]);
+      }
+
+      async function createProject() {
+        const payload = {
+          title: document.getElementById("project-title").value,
+          description: document.getElementById("project-description").value,
+          imageUrl: document.getElementById("project-imageUrl").value,
+          projectUrl: document.getElementById("project-projectUrl").value,
+        };
+
+        if (!required(payload.title) || !required(payload.description) || !required(payload.imageUrl) || !required(payload.projectUrl)) {
+          alert("Field project wajib diisi semua.");
+          return;
+        }
+
+        await api.request("/projects", "POST", payload);
+        await refreshProjects();
+      }
+
+      async function updateProject() {
+        const idValue = document.getElementById("project-id").value;
+        const id = parseId(idValue);
+        if (!id) {
+          alert("Project ID wajib diisi.");
+          return;
+        }
+
+        const payload = {};
+        const title = document.getElementById("project-new-title").value;
+        const description = document.getElementById("project-new-description").value;
+        if (required(title)) payload.title = title;
+        if (required(description)) payload.description = description;
+
+        if (Object.keys(payload).length === 0) {
+          alert("Isi minimal satu field update project.");
+          return;
+        }
+
+        await api.request(`/projects/${id}`, "PUT", payload);
+        await refreshProjects();
+      }
+
+      async function deleteProject() {
+        const idValue = document.getElementById("project-id").value;
+        const id = parseId(idValue);
+        if (!id) {
+          alert("Project ID wajib diisi.");
+          return;
+        }
+
+        await api.request(`/projects/${id}`, "DELETE");
+        await refreshProjects();
+      }
+
+      async function createSkill() {
+        const payload = {
+          name: document.getElementById("skill-name").value,
+          level: document.getElementById("skill-level").value,
+          category: document.getElementById("skill-category").value,
+        };
+
+        if (!required(payload.name) || !required(payload.level) || !required(payload.category)) {
+          alert("Field skill wajib diisi semua.");
+          return;
+        }
+
+        await api.request("/skills", "POST", payload);
+        await refreshSkills();
+      }
+
+      async function updateSkill() {
+        const idValue = document.getElementById("skill-id").value;
+        const id = parseId(idValue);
+        if (!id) {
+          alert("Skill ID wajib diisi.");
+          return;
+        }
+
+        const payload = {};
+        const name = document.getElementById("skill-new-name").value;
+        const level = document.getElementById("skill-new-level").value;
+        if (required(name)) payload.name = name;
+        if (required(level)) payload.level = level;
+
+        if (Object.keys(payload).length === 0) {
+          alert("Isi minimal satu field update skill.");
+          return;
+        }
+
+        await api.request(`/skills/${id}`, "PUT", payload);
+        await refreshSkills();
+      }
+
+      async function deleteSkill() {
+        const idValue = document.getElementById("skill-id").value;
+        const id = parseId(idValue);
+        if (!id) {
+          alert("Skill ID wajib diisi.");
+          return;
+        }
+
+        await api.request(`/skills/${id}`, "DELETE");
+        await refreshSkills();
+      }
+
+      async function createProfile() {
+        const payload = {
+          fullName: document.getElementById("profile-fullName").value,
+          headline: document.getElementById("profile-headline").value,
+          bio: document.getElementById("profile-bio").value,
+          email: document.getElementById("profile-email").value,
+          location: document.getElementById("profile-location").value,
+          avatarUrl: document.getElementById("profile-avatarUrl").value,
+        };
+
+        if (!required(payload.fullName) || !required(payload.headline) || !required(payload.bio) || !required(payload.email) || !required(payload.location) || !required(payload.avatarUrl)) {
+          alert("Field profile wajib diisi semua.");
+          return;
+        }
+
+        await api.request("/profile", "POST", payload);
+        await refreshProfile();
+      }
+
+      async function updateProfile() {
+        const idValue = document.getElementById("profile-id").value;
+        const id = parseId(idValue);
+        if (!id) {
+          alert("Profile ID wajib diisi.");
+          return;
+        }
+
+        const payload = {};
+        const headline = document.getElementById("profile-new-headline").value;
+        const location = document.getElementById("profile-new-location").value;
+        if (required(headline)) payload.headline = headline;
+        if (required(location)) payload.location = location;
+
+        if (Object.keys(payload).length === 0) {
+          alert("Isi minimal satu field update profile.");
+          return;
+        }
+
+        await api.request(`/profile/${id}`, "PUT", payload);
+        await refreshProfile();
+      }
+
+      async function deleteProfile() {
+        const idValue = document.getElementById("profile-id").value;
+        const id = parseId(idValue);
+        if (!id) {
+          alert("Profile ID wajib diisi.");
+          return;
+        }
+
+        await api.request(`/profile/${id}`, "DELETE");
+        await refreshProfile();
+      }
+
+      document.getElementById("refresh-projects").addEventListener("click", refreshProjects);
+      document.getElementById("refresh-skills").addEventListener("click", refreshSkills);
+      document.getElementById("refresh-profile").addEventListener("click", refreshProfile);
+
+      document.getElementById("create-project").addEventListener("click", createProject);
+      document.getElementById("update-project").addEventListener("click", updateProject);
+      document.getElementById("delete-project").addEventListener("click", deleteProject);
+
+      document.getElementById("create-skill").addEventListener("click", createSkill);
+      document.getElementById("update-skill").addEventListener("click", updateSkill);
+      document.getElementById("delete-skill").addEventListener("click", deleteSkill);
+
+      document.getElementById("create-profile").addEventListener("click", createProfile);
+      document.getElementById("update-profile").addEventListener("click", updateProfile);
+      document.getElementById("delete-profile").addEventListener("click", deleteProfile);
+
+      Promise.all([refreshHealth(), refreshProjects(), refreshSkills(), refreshProfile()]);
+    </script>
+  </body>
+</html>
+        "delete-project": deleteProject,
+        "create-skill": createSkill,
+        "refresh-skills": refreshSkills,
+        "update-skill": updateSkill,
+        "delete-skill": deleteSkill,
+        "create-profile": createProfile,
+        "refresh-profile": refreshProfile,
+        "update-profile": updateProfile,
+        "delete-profile": deleteProfile,
+      };
+
+      document.querySelectorAll("button[data-action]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const action = button.getAttribute("data-action");
+          if (action && handlers[action]) {
+            handlers[action]();
+          }
+        });
+      });
+
+      refreshHealth();
+      refreshProjects();
+      refreshSkills();
+      refreshProfile();
+    </script>
+  </body>
+</html>
