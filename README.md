@@ -30,37 +30,41 @@
 ## 🔥 API Endpoints
 
 ### Projects
-| Method | Endpoint           | Description         |
-|--------|--------------------|--------------------|
-| GET    | /projects          | List all projects  |
-| GET    | /projects/:id      | Get project by ID  |
-| POST   | /projects          | Create project     |
-| PUT    | /projects/:id      | Update project     |
-| DELETE | /projects/:id      | Delete project     |
+
+| Method | Endpoint      | Description       |
+| ------ | ------------- | ----------------- |
+| GET    | /projects     | List all projects |
+| GET    | /projects/:id | Get project by ID |
+| POST   | /projects     | Create project    |
+| PUT    | /projects/:id | Update project    |
+| DELETE | /projects/:id | Delete project    |
 
 ### Skills
-| Method | Endpoint           | Description         |
-|--------|--------------------|--------------------|
-| GET    | /skills            | List all skills    |
-| GET    | /skills/:id        | Get skill by ID    |
-| POST   | /skills            | Create skill       |
-| PUT    | /skills/:id        | Update skill       |
-| DELETE | /skills/:id        | Delete skill       |
+
+| Method | Endpoint    | Description     |
+| ------ | ----------- | --------------- |
+| GET    | /skills     | List all skills |
+| GET    | /skills/:id | Get skill by ID |
+| POST   | /skills     | Create skill    |
+| PUT    | /skills/:id | Update skill    |
+| DELETE | /skills/:id | Delete skill    |
 
 ### Profile
-| Method | Endpoint           | Description         |
-|--------|--------------------|--------------------|
-| GET    | /profile           | List all profiles  |
-| GET    | /profile/:id       | Get profile by ID  |
-| POST   | /profile           | Create profile     |
-| PUT    | /profile/:id       | Update profile     |
-| DELETE | /profile/:id       | Delete profile     |
+
+| Method | Endpoint     | Description       |
+| ------ | ------------ | ----------------- |
+| GET    | /profile     | List all profiles |
+| GET    | /profile/:id | Get profile by ID |
+| POST   | /profile     | Create profile    |
+| PUT    | /profile/:id | Update profile    |
+| DELETE | /profile/:id | Delete profile    |
 
 ---
 
 ## 🚦 Quick Start & Installation
 
 ### Prerequisites
+
 - Node.js v18+
 - PostgreSQL (running locally or remote)
 
@@ -80,27 +84,27 @@ npm install
 ### 3. Environment Setup
 
 - Copy the example environment file:
-   ```bash
-   cp .env.example .env
-   # or (Windows)
-   copy .env.example .env
-   ```
+  ```bash
+  cp .env.example .env
+  # or (Windows)
+  copy .env.example .env
+  ```
 - Edit `.env` and set your `DATABASE_URL` to match your PostgreSQL instance.
 
 ### 4. Database Migration & Seeding
 
 - Generate migration (if needed):
-   ```bash
-   npm run db:generate
-   ```
+  ```bash
+  npm run db:generate
+  ```
 - Push schema to PostgreSQL:
-   ```bash
-   npm run db:push
-   ```
+  ```bash
+  npm run db:push
+  ```
 - (Optional) Seed initial data:
-   ```bash
-   npm run seed
-   ```
+  ```bash
+  npm run seed
+  ```
 
 ### 5. Run the Server
 
@@ -111,7 +115,6 @@ npm run dev
 Server will run at [http://localhost:3000](http://localhost:3000) by default.
 
 ---
-
 
 ## 🖥️ Dashboard
 

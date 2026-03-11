@@ -93,10 +93,38 @@
         background: #fff;
       }
 
+      .menu a.active {
+        border-color: #bfd1ef;
+        background: #f6f9ff;
+        color: #1b3760;
+      }
+
       .note {
         margin-top: 16px;
         font-size: 0.84rem;
         color: var(--muted);
+      }
+
+      .guide {
+        margin-top: 18px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.75);
+      }
+
+      .guide h2 {
+        margin: 0 0 8px;
+        font-size: 0.95rem;
+      }
+
+      .guide ol {
+        margin: 0;
+        padding-left: 18px;
+        display: grid;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 0.82rem;
       }
 
       .main {
@@ -178,6 +206,16 @@
         padding: 14px;
       }
 
+      .panel-tip {
+        margin: 0 0 12px;
+        padding: 10px 11px;
+        border: 1px dashed #bfd1ef;
+        border-radius: 10px;
+        color: #2e4d79;
+        background: #f6f9ff;
+        font-size: 0.88rem;
+      }
+
       .data-table {
         width: 100%;
         border-collapse: collapse;
@@ -227,7 +265,15 @@
         color: var(--muted);
       }
 
+      .field-help {
+        margin-top: 5px;
+        margin-bottom: 1px;
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+
       input,
+      select,
       textarea,
       button {
         width: 100%;
@@ -276,6 +322,79 @@
         color: var(--muted);
       }
 
+      .notice {
+        margin-bottom: 14px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid #bfd1ef;
+        background: #f6f9ff;
+        color: #1b3760;
+        font-size: 0.9rem;
+        display: none;
+      }
+
+      .notice.success {
+        border-color: #bbe6db;
+        background: #e8f9f4;
+        color: #0a6b56;
+      }
+
+      .notice.error {
+        border-color: #f2c0bc;
+        background: #fff3f2;
+        color: #8a1c14;
+      }
+
+      .content-view[hidden] {
+        display: none !important;
+      }
+
+      .wizard-card {
+        margin-top: 0;
+      }
+
+      .wizard-steps {
+        display: grid;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .wizard-step {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 9px 10px;
+        background: #fff;
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+
+      .wizard-step.active {
+        border-color: #bfd1ef;
+        background: #f6f9ff;
+        color: #1b3760;
+        font-weight: 600;
+      }
+
+      .wizard-controls {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .wizard-hidden {
+        display: none;
+      }
+
+      body.wizard-active .advanced-zone {
+        display: none;
+      }
+
+      .focus-ring {
+        outline: 2px solid #1459c7;
+        outline-offset: 3px;
+      }
+
       @media (max-width: 1100px) {
         .layout {
           grid-template-columns: 1fr;
@@ -292,7 +411,8 @@
       @media (max-width: 840px) {
         .stats,
         .grid-2,
-        .grid-3 {
+        .grid-3,
+        .wizard-controls {
           grid-template-columns: 1fr;
         }
 
@@ -310,14 +430,23 @@
           <h1>Admin Console</h1>
         </div>
         <nav class="menu">
-          <a href="#overview">Overview</a>
-          <a href="#projects">Manage Projects</a>
-          <a href="#skills">Manage Skills</a>
-          <a href="#profile">Manage Profile</a>
+          <a href="#" data-menu="overview" class="active">Overview</a>
+          <a href="#" data-menu="projects">Manage Projects</a>
+          <a href="#" data-menu="skills">Manage Skills</a>
+          <a href="#" data-menu="profile">Manage Profile</a>
         </nav>
         <p class="note">
-          Satu dashboard untuk kelola isi portfolio. Semua aksi langsung menulis ke tabel backend.
+          Satu dashboard untuk kelola isi portfolio. Semua aksi langsung menulis
+          ke tabel backend.
         </p>
+        <div class="guide">
+          <h2>Cara Isi Data (Mudah)</h2>
+          <ol>
+            <li>Isi semua kolom wajib pada bagian Create.</li>
+            <li>Untuk Update atau Delete, ambil angka ID dari tabel.</li>
+            <li>Gunakan URL lengkap yang diawali https://.</li>
+          </ol>
+        </div>
       </aside>
 
       <main class="main">
@@ -325,8 +454,61 @@
           <h1 class="topbar-title">Portfolio Dashboard</h1>
           <div id="api-status" class="badge">Checking API...</div>
         </div>
+        <div
+          class="notice"
+          id="action-notice"
+          role="status"
+          aria-live="polite"
+        ></div>
 
-        <section class="stats">
+        <section class="panel wizard-card" id="wizard-mode">
+          <div class="panel-head">
+            <h2>Mode Wizard (3 Langkah)</h2>
+            <button class="btn-soft" id="wizard-toggle">Aktifkan Wizard</button>
+          </div>
+          <div class="panel-content">
+            <div class="wizard-steps">
+              <div class="wizard-step active" id="wizard-step-1">
+                Step 1: Pilih data yang mau diisi.
+              </div>
+              <div class="wizard-step" id="wizard-step-2">
+                Step 2: Isi form sesuai contoh.
+              </div>
+              <div class="wizard-step" id="wizard-step-3">
+                Step 3: Simpan data.
+              </div>
+            </div>
+            <div class="grid-2">
+              <div>
+                <label for="wizard-entity"
+                  >Jenis data yang ingin ditambah</label
+                >
+                <select id="wizard-entity">
+                  <option value="projects">Project</option>
+                  <option value="skills">Skill</option>
+                  <option value="profile">Profile</option>
+                </select>
+              </div>
+              <div>
+                <label>Petunjuk aktif</label>
+                <p class="field-help" id="wizard-hint">
+                  Aktifkan wizard dulu, lalu klik Lanjut ke Step 2.
+                </p>
+              </div>
+            </div>
+            <div class="wizard-controls">
+              <button class="btn-soft" id="wizard-prev">Step Sebelumnya</button>
+              <button class="btn-primary" id="wizard-next">
+                Lanjut ke Step 2
+              </button>
+              <button class="btn-primary wizard-hidden" id="wizard-submit">
+                Simpan Data Sekarang
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="stats content-view" data-view="overview">
           <article class="stat">
             <p>Total Projects</p>
             <strong id="count-projects">0</strong>
@@ -341,12 +523,21 @@
           </article>
         </section>
 
-        <section class="panel" id="projects">
+        <section
+          class="panel content-view"
+          id="projects"
+          data-view="projects"
+          hidden
+        >
           <div class="panel-head">
             <h2>Projects Table</h2>
             <button class="btn-soft" id="refresh-projects">Refresh</button>
           </div>
           <div class="panel-content">
+            <p class="panel-tip">
+              Tambah proyek baru: isi judul, deskripsi, link gambar, dan link
+              proyek. Semua kolom wajib.
+            </p>
             <table class="data-table">
               <thead>
                 <tr>
@@ -363,49 +554,92 @@
             <div class="grid-2">
               <div>
                 <label>Title</label>
-                <input id="project-title" placeholder="Project title" />
+                <input
+                  id="project-title"
+                  placeholder="Contoh: Website Kasir UMKM"
+                />
+                <p class="field-help">
+                  Nama proyek yang mudah dipahami pengunjung.
+                </p>
               </div>
               <div>
                 <label>Project URL</label>
-                <input id="project-projectUrl" placeholder="https://example.com" />
+                <input
+                  id="project-projectUrl"
+                  type="url"
+                  placeholder="https://contoh.com/proyek"
+                />
+                <p class="field-help">Link demo atau halaman proyek.</p>
               </div>
             </div>
             <label>Description</label>
-            <textarea id="project-description" placeholder="Project description"></textarea>
+            <textarea
+              id="project-description"
+              placeholder="Jelaskan fungsi proyek ini dalam 1-2 kalimat"
+            ></textarea>
+            <p class="field-help">
+              Contoh: Aplikasi kasir untuk mencatat transaksi harian dan stok
+              barang.
+            </p>
             <label>Image URL</label>
-            <input id="project-imageUrl" placeholder="https://example.com/image.jpg" />
+            <input
+              id="project-imageUrl"
+              type="url"
+              placeholder="https://contoh.com/gambar-proyek.jpg"
+            />
+            <p class="field-help">Link gambar thumbnail proyek.</p>
             <div class="action-row">
-              <button class="btn-primary" id="create-project">Create Project</button>
+              <button class="btn-primary" id="create-project">
+                Create Project
+              </button>
             </div>
 
-            <h3>Update or Delete Project</h3>
-            <div class="grid-3">
-              <div>
-                <label>Project ID</label>
-                <input id="project-id" type="number" min="1" placeholder="1" />
+            <div class="advanced-zone">
+              <h3>Update or Delete Project</h3>
+              <div class="grid-3">
+                <div>
+                  <label>Project ID</label>
+                  <input
+                    id="project-id"
+                    type="number"
+                    min="1"
+                    placeholder="1"
+                  />
+                  <p class="field-help">
+                    Ambil ID dari kolom pertama pada tabel.
+                  </p>
+                </div>
+                <div>
+                  <label>New Title</label>
+                  <input id="project-new-title" placeholder="Optional" />
+                </div>
+                <div>
+                  <label>New Description</label>
+                  <input id="project-new-description" placeholder="Optional" />
+                </div>
               </div>
-              <div>
-                <label>New Title</label>
-                <input id="project-new-title" placeholder="Optional" />
+              <div class="action-row">
+                <button class="btn-soft" id="update-project">Update</button>
+                <button class="btn-danger" id="delete-project">Delete</button>
               </div>
-              <div>
-                <label>New Description</label>
-                <input id="project-new-description" placeholder="Optional" />
-              </div>
-            </div>
-            <div class="action-row">
-              <button class="btn-soft" id="update-project">Update</button>
-              <button class="btn-danger" id="delete-project">Delete</button>
             </div>
           </div>
         </section>
 
-        <section class="panel" id="skills">
+        <section
+          class="panel content-view"
+          id="skills"
+          data-view="skills"
+          hidden
+        >
           <div class="panel-head">
             <h2>Skills Table</h2>
             <button class="btn-soft" id="refresh-skills">Refresh</button>
           </div>
           <div class="panel-content">
+            <p class="panel-tip">
+              Tambah skill baru: isi nama skill, level kemampuan, dan kategori.
+            </p>
             <table class="data-table">
               <thead>
                 <tr>
@@ -423,48 +657,77 @@
               <div>
                 <label>Name</label>
                 <input id="skill-name" placeholder="TypeScript" />
+                <p class="field-help">
+                  Nama kemampuan, misalnya: React, PostgreSQL, UI Design.
+                </p>
               </div>
               <div>
                 <label>Level</label>
-                <input id="skill-level" placeholder="Advanced" />
+                <input
+                  id="skill-level"
+                  placeholder="Beginner / Intermediate / Advanced"
+                />
+                <p class="field-help">
+                  Gunakan level yang konsisten agar rapi.
+                </p>
               </div>
               <div>
                 <label>Category</label>
-                <input id="skill-category" placeholder="Backend" />
+                <input
+                  id="skill-category"
+                  placeholder="Frontend / Backend / Tools"
+                />
+                <p class="field-help">
+                  Kelompokkan skill supaya mudah dipahami.
+                </p>
               </div>
             </div>
             <div class="action-row">
-              <button class="btn-primary" id="create-skill">Create Skill</button>
+              <button class="btn-primary" id="create-skill">
+                Create Skill
+              </button>
             </div>
 
-            <h3>Update or Delete Skill</h3>
-            <div class="grid-3">
-              <div>
-                <label>Skill ID</label>
-                <input id="skill-id" type="number" min="1" placeholder="1" />
+            <div class="advanced-zone">
+              <h3>Update or Delete Skill</h3>
+              <div class="grid-3">
+                <div>
+                  <label>Skill ID</label>
+                  <input id="skill-id" type="number" min="1" placeholder="1" />
+                  <p class="field-help">Isi ID dari tabel skill.</p>
+                </div>
+                <div>
+                  <label>New Name</label>
+                  <input id="skill-new-name" placeholder="Optional" />
+                </div>
+                <div>
+                  <label>New Level</label>
+                  <input id="skill-new-level" placeholder="Optional" />
+                </div>
               </div>
-              <div>
-                <label>New Name</label>
-                <input id="skill-new-name" placeholder="Optional" />
+              <div class="action-row">
+                <button class="btn-soft" id="update-skill">Update</button>
+                <button class="btn-danger" id="delete-skill">Delete</button>
               </div>
-              <div>
-                <label>New Level</label>
-                <input id="skill-new-level" placeholder="Optional" />
-              </div>
-            </div>
-            <div class="action-row">
-              <button class="btn-soft" id="update-skill">Update</button>
-              <button class="btn-danger" id="delete-skill">Delete</button>
             </div>
           </div>
         </section>
 
-        <section class="panel" id="profile">
+        <section
+          class="panel content-view"
+          id="profile"
+          data-view="profile"
+          hidden
+        >
           <div class="panel-head">
             <h2>Profile Table</h2>
             <button class="btn-soft" id="refresh-profile">Refresh</button>
           </div>
           <div class="panel-content">
+            <p class="panel-tip">
+              Tambah profil utama: data ini biasanya tampil di halaman About
+              atau Hero.
+            </p>
             <table class="data-table">
               <thead>
                 <tr>
@@ -483,50 +746,90 @@
               <div>
                 <label>Full Name</label>
                 <input id="profile-fullName" placeholder="John Developer" />
+                <p class="field-help">
+                  Nama lengkap sesuai yang ingin ditampilkan publik.
+                </p>
               </div>
               <div>
                 <label>Headline</label>
-                <input id="profile-headline" placeholder="Full Stack Developer" />
+                <input
+                  id="profile-headline"
+                  placeholder="Full Stack Developer"
+                />
+                <p class="field-help">
+                  Jabatan singkat, contoh: Web Developer.
+                </p>
               </div>
             </div>
             <label>Bio</label>
-            <textarea id="profile-bio" placeholder="Bio"></textarea>
+            <textarea
+              id="profile-bio"
+              placeholder="Perkenalan singkat: pengalaman, fokus, dan nilai yang ditawarkan"
+            ></textarea>
+            <p class="field-help">
+              Tulis ringkas 2-4 kalimat agar mudah dibaca.
+            </p>
             <div class="grid-3">
               <div>
                 <label>Email</label>
-                <input id="profile-email" placeholder="john@example.com" />
+                <input
+                  id="profile-email"
+                  type="email"
+                  placeholder="nama@email.com"
+                />
+                <p class="field-help">Email aktif untuk kontak kerja.</p>
               </div>
               <div>
                 <label>Location</label>
                 <input id="profile-location" placeholder="Jakarta" />
+                <p class="field-help">Kota domisili, contoh: Bandung.</p>
               </div>
               <div>
                 <label>Avatar URL</label>
-                <input id="profile-avatarUrl" placeholder="https://example.com/avatar.jpg" />
+                <input
+                  id="profile-avatarUrl"
+                  type="url"
+                  placeholder="https://contoh.com/foto-profil.jpg"
+                />
+                <p class="field-help">
+                  Link foto profil dengan resolusi jelas.
+                </p>
               </div>
             </div>
             <div class="action-row">
-              <button class="btn-primary" id="create-profile">Create Profile</button>
+              <button class="btn-primary" id="create-profile">
+                Create Profile
+              </button>
             </div>
 
-            <h3>Update or Delete Profile</h3>
-            <div class="grid-3">
-              <div>
-                <label>Profile ID</label>
-                <input id="profile-id" type="number" min="1" placeholder="1" />
+            <div class="advanced-zone">
+              <h3>Update or Delete Profile</h3>
+              <div class="grid-3">
+                <div>
+                  <label>Profile ID</label>
+                  <input
+                    id="profile-id"
+                    type="number"
+                    min="1"
+                    placeholder="1"
+                  />
+                  <p class="field-help">
+                    Pilih ID dari tabel profil yang ingin diubah/hapus.
+                  </p>
+                </div>
+                <div>
+                  <label>New Headline</label>
+                  <input id="profile-new-headline" placeholder="Optional" />
+                </div>
+                <div>
+                  <label>New Location</label>
+                  <input id="profile-new-location" placeholder="Optional" />
+                </div>
               </div>
-              <div>
-                <label>New Headline</label>
-                <input id="profile-new-headline" placeholder="Optional" />
+              <div class="action-row">
+                <button class="btn-soft" id="update-profile">Update</button>
+                <button class="btn-danger" id="delete-profile">Delete</button>
               </div>
-              <div>
-                <label>New Location</label>
-                <input id="profile-new-location" placeholder="Optional" />
-              </div>
-            </div>
-            <div class="action-row">
-              <button class="btn-soft" id="update-profile">Update</button>
-              <button class="btn-danger" id="delete-profile">Delete</button>
             </div>
           </div>
         </section>
@@ -554,10 +857,20 @@
         },
       };
 
-      const required = (value) => typeof value === "string" && value.trim() !== "";
+      const required = (value) =>
+        typeof value === "string" && value.trim() !== "";
+      const clean = (value) =>
+        typeof value === "string" ? value.trim() : value;
       const shortText = (value, max = 60) => {
         if (!value) return "-";
         return value.length > max ? `${value.slice(0, max)}...` : value;
+      };
+
+      const showNotice = (message, type = "") => {
+        const notice = document.getElementById("action-notice");
+        notice.textContent = message;
+        notice.className = `notice ${type}`.trim();
+        notice.style.display = "block";
       };
 
       const setApiStatus = (ok, text) => {
@@ -592,6 +905,138 @@
 
       const parseId = (id) => Number.parseInt(id, 10);
 
+      const extractMessage = (data, fallback) => {
+        if (typeof data === "string" && data.trim() !== "") return data;
+        if (
+          data &&
+          typeof data === "object" &&
+          typeof data.message === "string"
+        )
+          return data.message;
+        return fallback;
+      };
+
+      const wizardState = {
+        enabled: false,
+        step: 1,
+        entity: "projects",
+      };
+
+      let activeMenu = "overview";
+
+      const setActiveMenu = (menuName) => {
+        activeMenu = menuName;
+
+        document.querySelectorAll(".content-view").forEach((view) => {
+          view.hidden = view.dataset.view !== menuName;
+        });
+
+        document.querySelectorAll(".menu a[data-menu]").forEach((link) => {
+          link.classList.toggle("active", link.dataset.menu === menuName);
+        });
+      };
+
+      const wizardEntityMap = {
+        projects: {
+          label: "Project",
+          sectionId: "projects",
+          create: createProject,
+        },
+        skills: {
+          label: "Skill",
+          sectionId: "skills",
+          create: createSkill,
+        },
+        profile: {
+          label: "Profile",
+          sectionId: "profile",
+          create: createProfile,
+        },
+      };
+
+      const focusSection = (sectionId) => {
+        if (activeMenu !== sectionId) {
+          setActiveMenu(sectionId);
+        }
+
+        const section = document.getElementById(sectionId);
+        if (!section) return;
+
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+        section.classList.add("focus-ring");
+        window.setTimeout(() => {
+          section.classList.remove("focus-ring");
+        }, 1200);
+      };
+
+      const renderWizard = () => {
+        const stepEls = [1, 2, 3].map((step) =>
+          document.getElementById(`wizard-step-${step}`),
+        );
+        const prevBtn = document.getElementById("wizard-prev");
+        const nextBtn = document.getElementById("wizard-next");
+        const submitBtn = document.getElementById("wizard-submit");
+        const hint = document.getElementById("wizard-hint");
+        const toggleBtn = document.getElementById("wizard-toggle");
+        const entity = wizardEntityMap[wizardState.entity];
+
+        stepEls.forEach((el, index) => {
+          if (!el) return;
+          el.classList.toggle("active", index + 1 === wizardState.step);
+        });
+
+        toggleBtn.textContent = wizardState.enabled
+          ? "Matikan Wizard"
+          : "Aktifkan Wizard";
+
+        prevBtn.disabled = !wizardState.enabled || wizardState.step === 1;
+        nextBtn.disabled = !wizardState.enabled;
+
+        if (!wizardState.enabled) {
+          submitBtn.classList.add("wizard-hidden");
+          nextBtn.textContent = "Lanjut ke Step 2";
+          hint.textContent =
+            "Aktifkan wizard dulu, lalu klik Lanjut ke Step 2.";
+          return;
+        }
+
+        if (wizardState.step === 1) {
+          nextBtn.textContent = "Lanjut ke Step 2";
+          submitBtn.classList.add("wizard-hidden");
+          hint.textContent = `Step 1: Kamu sedang menambah data ${entity.label}.`;
+          return;
+        }
+
+        if (wizardState.step === 2) {
+          nextBtn.textContent = "Lanjut ke Step 3";
+          submitBtn.classList.add("wizard-hidden");
+          hint.textContent =
+            "Step 2: Isi form Create sesuai contoh yang ada di bawah.";
+          return;
+        }
+
+        nextBtn.textContent = "Ulang dari Step 1";
+        submitBtn.classList.remove("wizard-hidden");
+        hint.textContent =
+          "Step 3: Jika semua kolom sudah terisi, klik Simpan Data Sekarang.";
+      };
+
+      const setWizardMode = (enabled) => {
+        wizardState.enabled = enabled;
+        wizardState.step = 1;
+        document.body.classList.toggle("wizard-active", enabled);
+        renderWizard();
+
+        if (enabled) {
+          showNotice(
+            "Mode wizard aktif. Fokus ke alur tambah data (create) agar lebih sederhana.",
+            "success",
+          );
+        } else {
+          showNotice("Mode wizard dimatikan. Semua fitur tampil kembali.", "");
+        }
+      };
+
       let cachedProjects = [];
       let cachedSkills = [];
       let cachedProfile = [];
@@ -608,19 +1053,24 @@
       async function refreshProjects() {
         const result = await api.request("/projects");
         cachedProjects = Array.isArray(result.data) ? result.data : [];
-        document.getElementById("count-projects").textContent = String(cachedProjects.length);
+        document.getElementById("count-projects").textContent = String(
+          cachedProjects.length,
+        );
         fillTable("projects-body", cachedProjects, [
           (item) => `<span class="tag mono">${item.id}</span>`,
           (item) => shortText(item.title, 28),
           (item) => shortText(item.description, 56),
-          (item) => `<a href="${item.projectUrl}" target="_blank" rel="noreferrer">Open</a>`,
+          (item) =>
+            `<a href="${item.projectUrl}" target="_blank" rel="noreferrer">Open</a>`,
         ]);
       }
 
       async function refreshSkills() {
         const result = await api.request("/skills");
         cachedSkills = Array.isArray(result.data) ? result.data : [];
-        document.getElementById("count-skills").textContent = String(cachedSkills.length);
+        document.getElementById("count-skills").textContent = String(
+          cachedSkills.length,
+        );
         fillTable("skills-body", cachedSkills, [
           (item) => `<span class="tag mono">${item.id}</span>`,
           (item) => shortText(item.name, 22),
@@ -632,7 +1082,9 @@
       async function refreshProfile() {
         const result = await api.request("/profile");
         cachedProfile = Array.isArray(result.data) ? result.data : [];
-        document.getElementById("count-profile").textContent = String(cachedProfile.length);
+        document.getElementById("count-profile").textContent = String(
+          cachedProfile.length,
+        );
         fillTable("profile-body", cachedProfile, [
           (item) => `<span class="tag mono">${item.id}</span>`,
           (item) => shortText(item.fullName, 22),
@@ -644,18 +1096,39 @@
 
       async function createProject() {
         const payload = {
-          title: document.getElementById("project-title").value,
-          description: document.getElementById("project-description").value,
-          imageUrl: document.getElementById("project-imageUrl").value,
-          projectUrl: document.getElementById("project-projectUrl").value,
+          title: clean(document.getElementById("project-title").value),
+          description: clean(
+            document.getElementById("project-description").value,
+          ),
+          imageUrl: clean(document.getElementById("project-imageUrl").value),
+          projectUrl: clean(
+            document.getElementById("project-projectUrl").value,
+          ),
         };
 
-        if (!required(payload.title) || !required(payload.description) || !required(payload.imageUrl) || !required(payload.projectUrl)) {
-          alert("Field project wajib diisi semua.");
+        if (
+          !required(payload.title) ||
+          !required(payload.description) ||
+          !required(payload.imageUrl) ||
+          !required(payload.projectUrl)
+        ) {
+          showNotice(
+            "Semua kolom Project wajib diisi sebelum disimpan.",
+            "error",
+          );
           return;
         }
 
-        await api.request("/projects", "POST", payload);
+        const result = await api.request("/projects", "POST", payload);
+        if (result.status < 200 || result.status >= 300) {
+          showNotice(
+            extractMessage(result.data, "Gagal membuat project."),
+            "error",
+          );
+          return;
+        }
+
+        showNotice("Project berhasil ditambahkan.", "success");
         await refreshProjects();
       }
 
@@ -663,22 +1136,33 @@
         const idValue = document.getElementById("project-id").value;
         const id = parseId(idValue);
         if (!id) {
-          alert("Project ID wajib diisi.");
+          showNotice("Isi Project ID terlebih dahulu.", "error");
           return;
         }
 
         const payload = {};
-        const title = document.getElementById("project-new-title").value;
-        const description = document.getElementById("project-new-description").value;
+        const title = clean(document.getElementById("project-new-title").value);
+        const description = clean(
+          document.getElementById("project-new-description").value,
+        );
         if (required(title)) payload.title = title;
         if (required(description)) payload.description = description;
 
         if (Object.keys(payload).length === 0) {
-          alert("Isi minimal satu field update project.");
+          showNotice("Isi minimal satu kolom untuk update project.", "error");
           return;
         }
 
-        await api.request(`/projects/${id}`, "PUT", payload);
+        const result = await api.request(`/projects/${id}`, "PUT", payload);
+        if (result.status < 200 || result.status >= 300) {
+          showNotice(
+            extractMessage(result.data, "Gagal update project."),
+            "error",
+          );
+          return;
+        }
+
+        showNotice("Project berhasil diperbarui.", "success");
         await refreshProjects();
       }
 
@@ -686,27 +1170,52 @@
         const idValue = document.getElementById("project-id").value;
         const id = parseId(idValue);
         if (!id) {
-          alert("Project ID wajib diisi.");
+          showNotice("Isi Project ID yang ingin dihapus.", "error");
           return;
         }
 
-        await api.request(`/projects/${id}`, "DELETE");
+        const result = await api.request(`/projects/${id}`, "DELETE");
+        if (result.status < 200 || result.status >= 300) {
+          showNotice(
+            extractMessage(result.data, "Gagal menghapus project."),
+            "error",
+          );
+          return;
+        }
+
+        showNotice("Project berhasil dihapus.", "success");
         await refreshProjects();
       }
 
       async function createSkill() {
         const payload = {
-          name: document.getElementById("skill-name").value,
-          level: document.getElementById("skill-level").value,
-          category: document.getElementById("skill-category").value,
+          name: clean(document.getElementById("skill-name").value),
+          level: clean(document.getElementById("skill-level").value),
+          category: clean(document.getElementById("skill-category").value),
         };
 
-        if (!required(payload.name) || !required(payload.level) || !required(payload.category)) {
-          alert("Field skill wajib diisi semua.");
+        if (
+          !required(payload.name) ||
+          !required(payload.level) ||
+          !required(payload.category)
+        ) {
+          showNotice(
+            "Semua kolom Skill wajib diisi sebelum disimpan.",
+            "error",
+          );
           return;
         }
 
-        await api.request("/skills", "POST", payload);
+        const result = await api.request("/skills", "POST", payload);
+        if (result.status < 200 || result.status >= 300) {
+          showNotice(
+            extractMessage(result.data, "Gagal membuat skill."),
+            "error",
+          );
+          return;
+        }
+
+        showNotice("Skill berhasil ditambahkan.", "success");
         await refreshSkills();
       }
 
@@ -714,22 +1223,31 @@
         const idValue = document.getElementById("skill-id").value;
         const id = parseId(idValue);
         if (!id) {
-          alert("Skill ID wajib diisi.");
+          showNotice("Isi Skill ID terlebih dahulu.", "error");
           return;
         }
 
         const payload = {};
-        const name = document.getElementById("skill-new-name").value;
-        const level = document.getElementById("skill-new-level").value;
+        const name = clean(document.getElementById("skill-new-name").value);
+        const level = clean(document.getElementById("skill-new-level").value);
         if (required(name)) payload.name = name;
         if (required(level)) payload.level = level;
 
         if (Object.keys(payload).length === 0) {
-          alert("Isi minimal satu field update skill.");
+          showNotice("Isi minimal satu kolom untuk update skill.", "error");
           return;
         }
 
-        await api.request(`/skills/${id}`, "PUT", payload);
+        const result = await api.request(`/skills/${id}`, "PUT", payload);
+        if (result.status < 200 || result.status >= 300) {
+          showNotice(
+            extractMessage(result.data, "Gagal update skill."),
+            "error",
+          );
+          return;
+        }
+
+        showNotice("Skill berhasil diperbarui.", "success");
         await refreshSkills();
       }
 
@@ -737,30 +1255,58 @@
         const idValue = document.getElementById("skill-id").value;
         const id = parseId(idValue);
         if (!id) {
-          alert("Skill ID wajib diisi.");
+          showNotice("Isi Skill ID yang ingin dihapus.", "error");
           return;
         }
 
-        await api.request(`/skills/${id}`, "DELETE");
+        const result = await api.request(`/skills/${id}`, "DELETE");
+        if (result.status < 200 || result.status >= 300) {
+          showNotice(
+            extractMessage(result.data, "Gagal menghapus skill."),
+            "error",
+          );
+          return;
+        }
+
+        showNotice("Skill berhasil dihapus.", "success");
         await refreshSkills();
       }
 
       async function createProfile() {
         const payload = {
-          fullName: document.getElementById("profile-fullName").value,
-          headline: document.getElementById("profile-headline").value,
-          bio: document.getElementById("profile-bio").value,
-          email: document.getElementById("profile-email").value,
-          location: document.getElementById("profile-location").value,
-          avatarUrl: document.getElementById("profile-avatarUrl").value,
+          fullName: clean(document.getElementById("profile-fullName").value),
+          headline: clean(document.getElementById("profile-headline").value),
+          bio: clean(document.getElementById("profile-bio").value),
+          email: clean(document.getElementById("profile-email").value),
+          location: clean(document.getElementById("profile-location").value),
+          avatarUrl: clean(document.getElementById("profile-avatarUrl").value),
         };
 
-        if (!required(payload.fullName) || !required(payload.headline) || !required(payload.bio) || !required(payload.email) || !required(payload.location) || !required(payload.avatarUrl)) {
-          alert("Field profile wajib diisi semua.");
+        if (
+          !required(payload.fullName) ||
+          !required(payload.headline) ||
+          !required(payload.bio) ||
+          !required(payload.email) ||
+          !required(payload.location) ||
+          !required(payload.avatarUrl)
+        ) {
+          showNotice(
+            "Semua kolom Profile wajib diisi sebelum disimpan.",
+            "error",
+          );
           return;
         }
 
-        await api.request("/profile", "POST", payload);
+        const result = await api.request("/profile", "POST", payload);
+        if (result.status < 200 || result.status >= 300) {
+          showNotice(
+            extractMessage(result.data, "Gagal membuat profile."),
+            "error",
+          );
+          return;
+        }
+
+        showNotice("Profile berhasil ditambahkan.", "success");
         await refreshProfile();
       }
 
@@ -768,22 +1314,35 @@
         const idValue = document.getElementById("profile-id").value;
         const id = parseId(idValue);
         if (!id) {
-          alert("Profile ID wajib diisi.");
+          showNotice("Isi Profile ID terlebih dahulu.", "error");
           return;
         }
 
         const payload = {};
-        const headline = document.getElementById("profile-new-headline").value;
-        const location = document.getElementById("profile-new-location").value;
+        const headline = clean(
+          document.getElementById("profile-new-headline").value,
+        );
+        const location = clean(
+          document.getElementById("profile-new-location").value,
+        );
         if (required(headline)) payload.headline = headline;
         if (required(location)) payload.location = location;
 
         if (Object.keys(payload).length === 0) {
-          alert("Isi minimal satu field update profile.");
+          showNotice("Isi minimal satu kolom untuk update profile.", "error");
           return;
         }
 
-        await api.request(`/profile/${id}`, "PUT", payload);
+        const result = await api.request(`/profile/${id}`, "PUT", payload);
+        if (result.status < 200 || result.status >= 300) {
+          showNotice(
+            extractMessage(result.data, "Gagal update profile."),
+            "error",
+          );
+          return;
+        }
+
+        showNotice("Profile berhasil diperbarui.", "success");
         await refreshProfile();
       }
 
@@ -791,58 +1350,134 @@
         const idValue = document.getElementById("profile-id").value;
         const id = parseId(idValue);
         if (!id) {
-          alert("Profile ID wajib diisi.");
+          showNotice("Isi Profile ID yang ingin dihapus.", "error");
           return;
         }
 
-        await api.request(`/profile/${id}`, "DELETE");
+        const result = await api.request(`/profile/${id}`, "DELETE");
+        if (result.status < 200 || result.status >= 300) {
+          showNotice(
+            extractMessage(result.data, "Gagal menghapus profile."),
+            "error",
+          );
+          return;
+        }
+
+        showNotice("Profile berhasil dihapus.", "success");
         await refreshProfile();
       }
 
-      document.getElementById("refresh-projects").addEventListener("click", refreshProjects);
-      document.getElementById("refresh-skills").addEventListener("click", refreshSkills);
-      document.getElementById("refresh-profile").addEventListener("click", refreshProfile);
+      document
+        .getElementById("refresh-projects")
+        .addEventListener("click", refreshProjects);
+      document
+        .getElementById("refresh-skills")
+        .addEventListener("click", refreshSkills);
+      document
+        .getElementById("refresh-profile")
+        .addEventListener("click", refreshProfile);
 
-      document.getElementById("create-project").addEventListener("click", createProject);
-      document.getElementById("update-project").addEventListener("click", updateProject);
-      document.getElementById("delete-project").addEventListener("click", deleteProject);
+      document
+        .getElementById("create-project")
+        .addEventListener("click", createProject);
+      document
+        .getElementById("update-project")
+        .addEventListener("click", updateProject);
+      document
+        .getElementById("delete-project")
+        .addEventListener("click", deleteProject);
 
-      document.getElementById("create-skill").addEventListener("click", createSkill);
-      document.getElementById("update-skill").addEventListener("click", updateSkill);
-      document.getElementById("delete-skill").addEventListener("click", deleteSkill);
+      document
+        .getElementById("create-skill")
+        .addEventListener("click", createSkill);
+      document
+        .getElementById("update-skill")
+        .addEventListener("click", updateSkill);
+      document
+        .getElementById("delete-skill")
+        .addEventListener("click", deleteSkill);
 
-      document.getElementById("create-profile").addEventListener("click", createProfile);
-      document.getElementById("update-profile").addEventListener("click", updateProfile);
-      document.getElementById("delete-profile").addEventListener("click", deleteProfile);
+      document
+        .getElementById("create-profile")
+        .addEventListener("click", createProfile);
+      document
+        .getElementById("update-profile")
+        .addEventListener("click", updateProfile);
+      document
+        .getElementById("delete-profile")
+        .addEventListener("click", deleteProfile);
 
-      Promise.all([refreshHealth(), refreshProjects(), refreshSkills(), refreshProfile()]);
-    </script>
-  </body>
-</html>
-        "delete-project": deleteProject,
-        "create-skill": createSkill,
-        "refresh-skills": refreshSkills,
-        "update-skill": updateSkill,
-        "delete-skill": deleteSkill,
-        "create-profile": createProfile,
-        "refresh-profile": refreshProfile,
-        "update-profile": updateProfile,
-        "delete-profile": deleteProfile,
-      };
-
-      document.querySelectorAll("button[data-action]").forEach((button) => {
-        button.addEventListener("click", () => {
-          const action = button.getAttribute("data-action");
-          if (action && handlers[action]) {
-            handlers[action]();
-          }
+      document.querySelectorAll(".menu a[data-menu]").forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          const selectedMenu = link.dataset.menu;
+          if (!selectedMenu) return;
+          setActiveMenu(selectedMenu);
         });
       });
 
-      refreshHealth();
-      refreshProjects();
-      refreshSkills();
-      refreshProfile();
+      document.getElementById("wizard-toggle").addEventListener("click", () => {
+        setWizardMode(!wizardState.enabled);
+      });
+
+      document
+        .getElementById("wizard-entity")
+        .addEventListener("change", (event) => {
+          wizardState.entity = event.target.value;
+          if (wizardState.enabled && wizardState.step >= 2) {
+            const entity = wizardEntityMap[wizardState.entity];
+            focusSection(entity.sectionId);
+          }
+          renderWizard();
+        });
+
+      document.getElementById("wizard-prev").addEventListener("click", () => {
+        if (!wizardState.enabled || wizardState.step === 1) return;
+        wizardState.step -= 1;
+        renderWizard();
+      });
+
+      document.getElementById("wizard-next").addEventListener("click", () => {
+        if (!wizardState.enabled) return;
+
+        if (wizardState.step < 3) {
+          wizardState.step += 1;
+          const entity = wizardEntityMap[wizardState.entity];
+          if (wizardState.step >= 2) {
+            focusSection(entity.sectionId);
+          }
+          renderWizard();
+          return;
+        }
+
+        wizardState.step = 1;
+        renderWizard();
+      });
+
+      document
+        .getElementById("wizard-submit")
+        .addEventListener("click", async () => {
+          if (!wizardState.enabled || wizardState.step !== 3) {
+            showNotice(
+              "Ikuti wizard sampai Step 3 dulu sebelum menyimpan.",
+              "error",
+            );
+            return;
+          }
+
+          const entity = wizardEntityMap[wizardState.entity];
+          await entity.create();
+        });
+
+      setActiveMenu("overview");
+      renderWizard();
+
+      Promise.all([
+        refreshHealth(),
+        refreshProjects(),
+        refreshSkills(),
+        refreshProfile(),
+      ]);
     </script>
   </body>
 </html>
