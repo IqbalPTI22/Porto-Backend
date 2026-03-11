@@ -139,6 +139,12 @@
         margin-bottom: 16px;
       }
 
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
       .topbar-title {
         margin: 0;
         font-family: "Space Grotesk", sans-serif;
@@ -152,6 +158,12 @@
         color: #0a6b56;
         font-size: 0.9rem;
         white-space: nowrap;
+      }
+
+      .lang-switch {
+        width: auto;
+        min-width: 120px;
+        background: #fff;
       }
 
       .stats {
@@ -430,29 +442,47 @@
           <h1>Admin Console</h1>
         </div>
         <nav class="menu">
-          <a href="#" data-menu="overview" class="active">Overview</a>
-          <a href="#" data-menu="projects">Manage Projects</a>
-          <a href="#" data-menu="skills">Manage Skills</a>
-          <a href="#" data-menu="profile">Manage Profile</a>
+          <a href="#" data-menu="overview" class="active" id="menu-overview"
+            >Overview</a
+          >
+          <a href="#" data-menu="projects" id="menu-projects"
+            >Manage Projects</a
+          >
+          <a href="#" data-menu="skills" id="menu-skills">Manage Skills</a>
+          <a href="#" data-menu="profile" id="menu-profile">Manage Profile</a>
         </nav>
-        <p class="note">
+        <p class="note" id="sidebar-note">
           Satu dashboard untuk kelola isi portfolio. Semua aksi langsung menulis
           ke tabel backend.
         </p>
         <div class="guide">
-          <h2>Cara Isi Data (Mudah)</h2>
+          <h2 id="guide-title">Cara Isi Data (Mudah)</h2>
           <ol>
-            <li>Isi semua kolom wajib pada bagian Create.</li>
-            <li>Untuk Update atau Delete, ambil angka ID dari tabel.</li>
-            <li>Gunakan URL lengkap yang diawali https://.</li>
+            <li id="guide-step-1">Isi semua kolom wajib pada bagian Create.</li>
+            <li id="guide-step-2">
+              Untuk Update atau Delete, ambil angka ID dari tabel.
+            </li>
+            <li id="guide-step-3">
+              Gunakan URL lengkap yang diawali https://.
+            </li>
           </ol>
         </div>
       </aside>
 
       <main class="main">
         <div class="topbar" id="overview">
-          <h1 class="topbar-title">Portfolio Dashboard</h1>
-          <div id="api-status" class="badge">Checking API...</div>
+          <h1 class="topbar-title" id="topbar-title">Portfolio Dashboard</h1>
+          <div class="topbar-actions">
+            <select
+              id="language-switch"
+              class="lang-switch"
+              aria-label="Language switcher"
+            >
+              <option value="en">English</option>
+              <option value="id">Indonesia</option>
+            </select>
+            <div id="api-status" class="badge">Checking API...</div>
+          </div>
         </div>
         <div
           class="notice"
@@ -463,7 +493,7 @@
 
         <section class="panel wizard-card" id="wizard-mode">
           <div class="panel-head">
-            <h2>Mode Wizard (3 Langkah)</h2>
+            <h2 id="wizard-title">Mode Wizard (3 Langkah)</h2>
             <button class="btn-soft" id="wizard-toggle">Aktifkan Wizard</button>
           </div>
           <div class="panel-content">
@@ -480,7 +510,7 @@
             </div>
             <div class="grid-2">
               <div>
-                <label for="wizard-entity"
+                <label for="wizard-entity" id="wizard-entity-label"
                   >Jenis data yang ingin ditambah</label
                 >
                 <select id="wizard-entity">
@@ -490,7 +520,7 @@
                 </select>
               </div>
               <div>
-                <label>Petunjuk aktif</label>
+                <label id="wizard-hint-label">Petunjuk aktif</label>
                 <p class="field-help" id="wizard-hint">
                   Aktifkan wizard dulu, lalu klik Lanjut ke Step 2.
                 </p>
@@ -510,15 +540,15 @@
 
         <section class="stats content-view" data-view="overview">
           <article class="stat">
-            <p>Total Projects</p>
+            <p id="stat-projects-label">Total Projects</p>
             <strong id="count-projects">0</strong>
           </article>
           <article class="stat">
-            <p>Total Skills</p>
+            <p id="stat-skills-label">Total Skills</p>
             <strong id="count-skills">0</strong>
           </article>
           <article class="stat">
-            <p>Total Profile Rows</p>
+            <p id="stat-profile-label">Total Profile Rows</p>
             <strong id="count-profile">0</strong>
           </article>
         </section>
@@ -530,7 +560,7 @@
           hidden
         >
           <div class="panel-head">
-            <h2>Projects Table</h2>
+            <h2 id="projects-panel-title">Projects Table</h2>
             <button class="btn-soft" id="refresh-projects">Refresh</button>
           </div>
           <div class="panel-content">
@@ -595,7 +625,7 @@
             </div>
 
             <div class="advanced-zone">
-              <h3>Update or Delete Project</h3>
+              <h3 id="project-advanced-title">Update or Delete Project</h3>
               <div class="grid-3">
                 <div>
                   <label>Project ID</label>
@@ -633,7 +663,7 @@
           hidden
         >
           <div class="panel-head">
-            <h2>Skills Table</h2>
+            <h2 id="skills-panel-title">Skills Table</h2>
             <button class="btn-soft" id="refresh-skills">Refresh</button>
           </div>
           <div class="panel-content">
@@ -689,7 +719,7 @@
             </div>
 
             <div class="advanced-zone">
-              <h3>Update or Delete Skill</h3>
+              <h3 id="skill-advanced-title">Update or Delete Skill</h3>
               <div class="grid-3">
                 <div>
                   <label>Skill ID</label>
@@ -720,7 +750,7 @@
           hidden
         >
           <div class="panel-head">
-            <h2>Profile Table</h2>
+            <h2 id="profile-panel-title">Profile Table</h2>
             <button class="btn-soft" id="refresh-profile">Refresh</button>
           </div>
           <div class="panel-content">
@@ -803,7 +833,7 @@
             </div>
 
             <div class="advanced-zone">
-              <h3>Update or Delete Profile</h3>
+              <h3 id="profile-advanced-title">Update or Delete Profile</h3>
               <div class="grid-3">
                 <div>
                   <label>Profile ID</label>
@@ -922,6 +952,198 @@
         entity: "projects",
       };
 
+      let currentLanguage = "en";
+
+      const i18n = {
+        en: {
+          menuOverview: "Overview",
+          menuProjects: "Manage Projects",
+          menuSkills: "Manage Skills",
+          menuProfile: "Manage Profile",
+          sidebarNote:
+            "One dashboard to manage portfolio data. Every action writes directly to backend tables.",
+          guideTitle: "How to Fill Data (Simple)",
+          guideStep1: "Fill all required fields in Create section.",
+          guideStep2: "For Update or Delete, use the ID from the table.",
+          guideStep3: "Use full URLs that start with https://.",
+          topbarTitle: "Portfolio Dashboard",
+          wizardTitle: "Wizard Mode (3 Steps)",
+          wizardEntityLabel: "Data type to create",
+          wizardHintLabel: "Current guidance",
+          statProjects: "Total Projects",
+          statSkills: "Total Skills",
+          statProfile: "Total Profile Rows",
+          projectsPanelTitle: "Projects Table",
+          skillsPanelTitle: "Skills Table",
+          profilePanelTitle: "Profile Table",
+          projectAdvancedTitle: "Update or Delete Project",
+          skillAdvancedTitle: "Update or Delete Skill",
+          profileAdvancedTitle: "Update or Delete Profile",
+          refresh: "Refresh",
+          createProject: "Create Project",
+          createSkill: "Create Skill",
+          createProfile: "Create Profile",
+          update: "Update",
+          delete: "Delete",
+          wizardToggleOn: "Enable Wizard",
+          wizardToggleOff: "Disable Wizard",
+          wizardPrev: "Previous Step",
+          wizardNext2: "Continue to Step 2",
+          wizardNext3: "Continue to Step 3",
+          wizardRestart: "Restart from Step 1",
+          wizardSubmit: "Save Data Now",
+          wizardStep1: "Step 1: Choose the data type to fill.",
+          wizardStep2: "Step 2: Fill the Create form using the examples.",
+          wizardStep3: "Step 3: Save your data.",
+          wizardHintInactive:
+            "Enable wizard first, then click Continue to Step 2.",
+          wizardHintStep1: (entityLabel) =>
+            `Step 1: You are creating ${entityLabel} data.`,
+          wizardHintStep2: "Step 2: Fill the Create form shown below.",
+          wizardHintStep3:
+            "Step 3: If all required fields are filled, click Save Data Now.",
+          wizardOnNotice:
+            "Wizard mode is enabled. Focus is set to create flow for easier input.",
+          wizardOffNotice:
+            "Wizard mode is disabled. All features are visible again.",
+          wizardNeedStep3:
+            "Please follow the wizard until Step 3 before saving.",
+          apiChecking: "Checking API...",
+          apiReadyPrefix: "API Ready",
+          apiNotReachable: "API not reachable",
+          wizardEntityProject: "Project",
+          wizardEntitySkill: "Skill",
+          wizardEntityProfile: "Profile",
+        },
+        id: {
+          menuOverview: "Ringkasan",
+          menuProjects: "Kelola Project",
+          menuSkills: "Kelola Skill",
+          menuProfile: "Kelola Profil",
+          sidebarNote:
+            "Satu dashboard untuk kelola data portfolio. Semua aksi langsung menulis ke tabel backend.",
+          guideTitle: "Cara Isi Data (Mudah)",
+          guideStep1: "Isi semua kolom wajib pada bagian Create.",
+          guideStep2: "Untuk Update atau Delete, ambil angka ID dari tabel.",
+          guideStep3: "Gunakan URL lengkap yang diawali https://.",
+          topbarTitle: "Dashboard Portfolio",
+          wizardTitle: "Mode Wizard (3 Langkah)",
+          wizardEntityLabel: "Jenis data yang ingin ditambah",
+          wizardHintLabel: "Petunjuk aktif",
+          statProjects: "Total Project",
+          statSkills: "Total Skill",
+          statProfile: "Total Baris Profil",
+          projectsPanelTitle: "Tabel Project",
+          skillsPanelTitle: "Tabel Skill",
+          profilePanelTitle: "Tabel Profil",
+          projectAdvancedTitle: "Update atau Hapus Project",
+          skillAdvancedTitle: "Update atau Hapus Skill",
+          profileAdvancedTitle: "Update atau Hapus Profil",
+          refresh: "Muat Ulang",
+          createProject: "Buat Project",
+          createSkill: "Buat Skill",
+          createProfile: "Buat Profil",
+          update: "Update",
+          delete: "Hapus",
+          wizardToggleOn: "Aktifkan Wizard",
+          wizardToggleOff: "Matikan Wizard",
+          wizardPrev: "Step Sebelumnya",
+          wizardNext2: "Lanjut ke Step 2",
+          wizardNext3: "Lanjut ke Step 3",
+          wizardRestart: "Ulang dari Step 1",
+          wizardSubmit: "Simpan Data Sekarang",
+          wizardStep1: "Step 1: Pilih data yang mau diisi.",
+          wizardStep2: "Step 2: Isi form Create sesuai contoh.",
+          wizardStep3: "Step 3: Simpan data.",
+          wizardHintInactive:
+            "Aktifkan wizard dulu, lalu klik Lanjut ke Step 2.",
+          wizardHintStep1: (entityLabel) =>
+            `Step 1: Kamu sedang menambah data ${entityLabel}.`,
+          wizardHintStep2:
+            "Step 2: Isi form Create sesuai contoh yang ada di bawah.",
+          wizardHintStep3:
+            "Step 3: Jika semua kolom sudah terisi, klik Simpan Data Sekarang.",
+          wizardOnNotice:
+            "Mode wizard aktif. Fokus ke alur tambah data (create) agar lebih sederhana.",
+          wizardOffNotice: "Mode wizard dimatikan. Semua fitur tampil kembali.",
+          wizardNeedStep3: "Ikuti wizard sampai Step 3 dulu sebelum menyimpan.",
+          apiChecking: "Mengecek API...",
+          apiReadyPrefix: "API Siap",
+          apiNotReachable: "API tidak bisa diakses",
+          wizardEntityProject: "Project",
+          wizardEntitySkill: "Skill",
+          wizardEntityProfile: "Profil",
+        },
+      };
+
+      const t = (key) => i18n[currentLanguage][key] ?? key;
+
+      const setText = (id, value) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = value;
+      };
+
+      const applyLanguage = (lang) => {
+        currentLanguage = i18n[lang] ? lang : "en";
+
+        setText("menu-overview", t("menuOverview"));
+        setText("menu-projects", t("menuProjects"));
+        setText("menu-skills", t("menuSkills"));
+        setText("menu-profile", t("menuProfile"));
+        setText("sidebar-note", t("sidebarNote"));
+        setText("guide-title", t("guideTitle"));
+        setText("guide-step-1", t("guideStep1"));
+        setText("guide-step-2", t("guideStep2"));
+        setText("guide-step-3", t("guideStep3"));
+        setText("topbar-title", t("topbarTitle"));
+        setText("wizard-title", t("wizardTitle"));
+        setText("wizard-entity-label", t("wizardEntityLabel"));
+        setText("wizard-hint-label", t("wizardHintLabel"));
+        setText("wizard-step-1", t("wizardStep1"));
+        setText("wizard-step-2", t("wizardStep2"));
+        setText("wizard-step-3", t("wizardStep3"));
+        setText("stat-projects-label", t("statProjects"));
+        setText("stat-skills-label", t("statSkills"));
+        setText("stat-profile-label", t("statProfile"));
+        setText("projects-panel-title", t("projectsPanelTitle"));
+        setText("skills-panel-title", t("skillsPanelTitle"));
+        setText("profile-panel-title", t("profilePanelTitle"));
+        setText("project-advanced-title", t("projectAdvancedTitle"));
+        setText("skill-advanced-title", t("skillAdvancedTitle"));
+        setText("profile-advanced-title", t("profileAdvancedTitle"));
+
+        setText("refresh-projects", t("refresh"));
+        setText("refresh-skills", t("refresh"));
+        setText("refresh-profile", t("refresh"));
+        setText("create-project", t("createProject"));
+        setText("create-skill", t("createSkill"));
+        setText("create-profile", t("createProfile"));
+        setText("update-project", t("update"));
+        setText("update-skill", t("update"));
+        setText("update-profile", t("update"));
+        setText("delete-project", t("delete"));
+        setText("delete-skill", t("delete"));
+        setText("delete-profile", t("delete"));
+
+        const wizardEntity = document.getElementById("wizard-entity");
+        if (wizardEntity) {
+          wizardEntity.querySelector('option[value="projects"]').textContent =
+            t("wizardEntityProject");
+          wizardEntity.querySelector('option[value="skills"]').textContent =
+            t("wizardEntitySkill");
+          wizardEntity.querySelector('option[value="profile"]').textContent = t(
+            "wizardEntityProfile",
+          );
+        }
+
+        const langSelect = document.getElementById("language-switch");
+        if (langSelect) langSelect.value = currentLanguage;
+
+        setText("api-status", t("apiChecking"));
+
+        renderWizard();
+      };
+
       let activeMenu = "overview";
 
       const setActiveMenu = (menuName) => {
@@ -938,17 +1160,17 @@
 
       const wizardEntityMap = {
         projects: {
-          label: "Project",
+          getLabel: () => t("wizardEntityProject"),
           sectionId: "projects",
           create: createProject,
         },
         skills: {
-          label: "Skill",
+          getLabel: () => t("wizardEntitySkill"),
           sectionId: "skills",
           create: createSkill,
         },
         profile: {
-          label: "Profile",
+          getLabel: () => t("wizardEntityProfile"),
           sectionId: "profile",
           create: createProfile,
         },
@@ -986,39 +1208,39 @@
         });
 
         toggleBtn.textContent = wizardState.enabled
-          ? "Matikan Wizard"
-          : "Aktifkan Wizard";
+          ? t("wizardToggleOff")
+          : t("wizardToggleOn");
+
+        prevBtn.textContent = t("wizardPrev");
+        submitBtn.textContent = t("wizardSubmit");
 
         prevBtn.disabled = !wizardState.enabled || wizardState.step === 1;
         nextBtn.disabled = !wizardState.enabled;
 
         if (!wizardState.enabled) {
           submitBtn.classList.add("wizard-hidden");
-          nextBtn.textContent = "Lanjut ke Step 2";
-          hint.textContent =
-            "Aktifkan wizard dulu, lalu klik Lanjut ke Step 2.";
+          nextBtn.textContent = t("wizardNext2");
+          hint.textContent = t("wizardHintInactive");
           return;
         }
 
         if (wizardState.step === 1) {
-          nextBtn.textContent = "Lanjut ke Step 2";
+          nextBtn.textContent = t("wizardNext2");
           submitBtn.classList.add("wizard-hidden");
-          hint.textContent = `Step 1: Kamu sedang menambah data ${entity.label}.`;
+          hint.textContent = t("wizardHintStep1")(entity.getLabel());
           return;
         }
 
         if (wizardState.step === 2) {
-          nextBtn.textContent = "Lanjut ke Step 3";
+          nextBtn.textContent = t("wizardNext3");
           submitBtn.classList.add("wizard-hidden");
-          hint.textContent =
-            "Step 2: Isi form Create sesuai contoh yang ada di bawah.";
+          hint.textContent = t("wizardHintStep2");
           return;
         }
 
-        nextBtn.textContent = "Ulang dari Step 1";
+        nextBtn.textContent = t("wizardRestart");
         submitBtn.classList.remove("wizard-hidden");
-        hint.textContent =
-          "Step 3: Jika semua kolom sudah terisi, klik Simpan Data Sekarang.";
+        hint.textContent = t("wizardHintStep3");
       };
 
       const setWizardMode = (enabled) => {
@@ -1028,12 +1250,9 @@
         renderWizard();
 
         if (enabled) {
-          showNotice(
-            "Mode wizard aktif. Fokus ke alur tambah data (create) agar lebih sederhana.",
-            "success",
-          );
+          showNotice(t("wizardOnNotice"), "success");
         } else {
-          showNotice("Mode wizard dimatikan. Semua fitur tampil kembali.", "");
+          showNotice(t("wizardOffNotice"), "");
         }
       };
 
@@ -1044,9 +1263,9 @@
       async function refreshHealth() {
         const result = await api.request("/health");
         if (result.status === 200) {
-          setApiStatus(true, `API Ready: ${result.data.message}`);
+          setApiStatus(true, `${t("apiReadyPrefix")}: ${result.data.message}`);
         } else {
-          setApiStatus(false, "API not reachable");
+          setApiStatus(false, t("apiNotReachable"));
         }
       }
 
@@ -1458,10 +1677,7 @@
         .getElementById("wizard-submit")
         .addEventListener("click", async () => {
           if (!wizardState.enabled || wizardState.step !== 3) {
-            showNotice(
-              "Ikuti wizard sampai Step 3 dulu sebelum menyimpan.",
-              "error",
-            );
+            showNotice(t("wizardNeedStep3"), "error");
             return;
           }
 
@@ -1470,7 +1686,15 @@
         });
 
       setActiveMenu("overview");
+      applyLanguage("en");
       renderWizard();
+
+      document
+        .getElementById("language-switch")
+        .addEventListener("change", (event) => {
+          applyLanguage(event.target.value);
+          refreshHealth();
+        });
 
       Promise.all([
         refreshHealth(),
