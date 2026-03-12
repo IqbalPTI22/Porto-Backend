@@ -7,6 +7,7 @@ import {
   getProjectById,
   updateProject,
 } from "../controllers/projects.controller.js";
+import { requireAuth } from "../middlewares/auth.middleware.js";
 
 const projectBodySchema = t.Object({
   title: t.String({ minLength: 1 }),
@@ -43,6 +44,7 @@ export const projectsRoute = new Elysia({ prefix: "/projects" })
       return result.body;
     },
     {
+      beforeHandle: requireAuth,
       body: projectBodySchema,
     },
   )
@@ -54,6 +56,7 @@ export const projectsRoute = new Elysia({ prefix: "/projects" })
       return result.body;
     },
     {
+      beforeHandle: requireAuth,
       params: t.Object({
         id: t.String(),
       }),
@@ -68,6 +71,7 @@ export const projectsRoute = new Elysia({ prefix: "/projects" })
       return result.body;
     },
     {
+      beforeHandle: requireAuth,
       params: t.Object({
         id: t.String(),
       }),

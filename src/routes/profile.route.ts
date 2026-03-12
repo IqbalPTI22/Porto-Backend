@@ -7,6 +7,7 @@ import {
   getProfileById,
   updateProfile,
 } from "../controllers/profile.controller.js";
+import { requireAuth } from "../middlewares/auth.middleware.js";
 
 const profileBodySchema = t.Object({
   fullName: t.String({ minLength: 1 }),
@@ -45,6 +46,7 @@ export const profileRoute = new Elysia({ prefix: "/profile" })
       return result.body;
     },
     {
+      beforeHandle: requireAuth,
       body: profileBodySchema,
     },
   )
@@ -56,6 +58,7 @@ export const profileRoute = new Elysia({ prefix: "/profile" })
       return result.body;
     },
     {
+      beforeHandle: requireAuth,
       params: t.Object({
         id: t.String(),
       }),
@@ -70,6 +73,7 @@ export const profileRoute = new Elysia({ prefix: "/profile" })
       return result.body;
     },
     {
+      beforeHandle: requireAuth,
       params: t.Object({
         id: t.String(),
       }),

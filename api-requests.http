@@ -2,9 +2,37 @@
 @projectId = 1
 @skillId = 1
 @profileId = 1
+@setupKey = change-me
+@adminEmail = admin@example.com
+@adminPassword = change-me-strong-password
+@authToken = paste-jwt-token-here
 
 ### Health Check
 GET {{baseUrl}}/health
+
+### =========================
+### Authentication
+### =========================
+
+### One-time admin setup
+POST {{baseUrl}}/auth/setup
+Content-Type: application/json
+x-setup-key: {{setupKey}}
+
+{
+  "name": "Main Admin",
+  "email": "{{adminEmail}}",
+  "password": "{{adminPassword}}"
+}
+
+### Admin login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{adminEmail}}",
+  "password": "{{adminPassword}}"
+}
 
 ### =========================
 ### Projects CRUD
@@ -19,6 +47,7 @@ GET {{baseUrl}}/projects/{{projectId}}
 ### Create project
 POST {{baseUrl}}/projects
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
   "title": "New Portfolio Feature",
@@ -30,6 +59,7 @@ Content-Type: application/json
 ### Update project
 PUT {{baseUrl}}/projects/{{projectId}}
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
   "title": "Updated Portfolio Feature"
@@ -37,6 +67,7 @@ Content-Type: application/json
 
 ### Delete project
 DELETE {{baseUrl}}/projects/{{projectId}}
+Authorization: Bearer {{authToken}}
 
 ### =========================
 ### Skills CRUD
@@ -51,6 +82,7 @@ GET {{baseUrl}}/skills/{{skillId}}
 ### Create skill
 POST {{baseUrl}}/skills
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
   "name": "Node.js",
@@ -61,6 +93,7 @@ Content-Type: application/json
 ### Update skill
 PUT {{baseUrl}}/skills/{{skillId}}
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
   "level": "Expert"
@@ -68,6 +101,7 @@ Content-Type: application/json
 
 ### Delete skill
 DELETE {{baseUrl}}/skills/{{skillId}}
+Authorization: Bearer {{authToken}}
 
 ### =========================
 ### Profile CRUD
@@ -82,6 +116,7 @@ GET {{baseUrl}}/profile/{{profileId}}
 ### Create profile
 POST {{baseUrl}}/profile
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
   "fullName": "Jane Developer",
@@ -95,6 +130,7 @@ Content-Type: application/json
 ### Update profile
 PUT {{baseUrl}}/profile/{{profileId}}
 Content-Type: application/json
+Authorization: Bearer {{authToken}}
 
 {
   "headline": "Senior Full Stack Engineer"
@@ -102,3 +138,4 @@ Content-Type: application/json
 
 ### Delete profile
 DELETE {{baseUrl}}/profile/{{profileId}}
+Authorization: Bearer {{authToken}}

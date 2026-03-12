@@ -4,6 +4,7 @@ import { resolve } from "node:path";
 import { Elysia } from "elysia";
 
 const dashboardPath = resolve(process.cwd(), "public", "dashboard.html");
+const loginPath = resolve(process.cwd(), "public", "login.html");
 
 export const dashboardRoute = new Elysia()
   .get("/", () => {
@@ -13,6 +14,34 @@ export const dashboardRoute = new Elysia()
         Location: "/dashboard",
       },
     });
+  })
+  .get("/login", async ({ set }) => {
+    try {
+      const html = await readFile(loginPath, "utf-8");
+      return new Response(html, {
+        status: 200,
+        headers: {
+          "content-type": "text/html; charset=utf-8",
+        },
+      });
+    } catch {
+      set.status = 500;
+      return { message: "Login file could not be loaded" };
+    }
+  })
+  .get("/login.html", async ({ set }) => {
+    try {
+      const html = await readFile(loginPath, "utf-8");
+      return new Response(html, {
+        status: 200,
+        headers: {
+          "content-type": "text/html; charset=utf-8",
+        },
+      });
+    } catch {
+      set.status = 500;
+      return { message: "Login file could not be loaded" };
+    }
   })
   .get("/dashboard", async ({ set }) => {
     try {

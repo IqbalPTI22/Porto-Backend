@@ -867,11 +867,18 @@
     </div>
 
     <script>
+      // Cek token, redirect ke login jika tidak ada
+      const token = localStorage.getItem("porto_token");
+      if (!token) {
+        window.location.href = "/login.html";
+      }
       const api = {
         async request(path, method = "GET", body) {
+          const headers = { "Content-Type": "application/json" };
+          if (token) headers["Authorization"] = `Bearer ${token}`;
           const response = await fetch(path, {
             method,
-            headers: { "Content-Type": "application/json" },
+            headers,
             body: body ? JSON.stringify(body) : undefined,
           });
 
@@ -881,6 +888,13 @@
             data = JSON.parse(text);
           } catch {
             data = text;
+          }
+
+          // Jika token expired/invalid, redirect ke login
+          if (response.status === 401) {
+            localStorage.removeItem("porto_token");
+            window.location.href = "/login.html";
+            return { status: 401, data: { message: "Unauthorized" } };
           }
 
           return { status: response.status, data };

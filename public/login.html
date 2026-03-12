@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login - Portfolio Dashboard</title>
+    <style>
+      body {
+        background: #f5f6fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+      }
+      .login-container {
+        background: #fff;
+        padding: 2.5rem 2rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+        width: 100%;
+        max-width: 350px;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .login-container h2 {
+        margin: 0 0 1rem 0;
+        text-align: center;
+        color: #222;
+        font-weight: 600;
+      }
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      label {
+        font-size: 1rem;
+        color: #555;
+      }
+      input[type="email"],
+      input[type="password"] {
+        padding: 0.7rem 1rem;
+        border: 1px solid #dcdde1;
+        border-radius: 6px;
+        font-size: 1rem;
+        outline: none;
+        transition: border 0.2s;
+      }
+      input[type="email"]:focus,
+      input[type="password"]:focus {
+        border-color: #4078c0;
+      }
+      button {
+        padding: 0.8rem 0;
+        background: #4078c0;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+      button:hover {
+        background: #305a8c;
+      }
+      .error {
+        color: #e74c3c;
+        text-align: center;
+        font-size: 0.98rem;
+      }
+    </style>
+  </head>
+  <body>
+    <form class="login-container" id="loginForm">
+      <h2>Admin Login</h2>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          autocomplete="username"
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          autocomplete="current-password"
+        />
+      </div>
+      <button type="submit">Login</button>
+      <div class="error" id="errorMsg"></div>
+    </form>
+    <script>
+      const form = document.getElementById("loginForm");
+      const errorMsg = document.getElementById("errorMsg");
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        errorMsg.textContent = "";
+        const email = form.email.value.trim();
+        const password = form.password.value;
+        try {
+          const res = await fetch("/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            errorMsg.textContent = data.message || "Login failed";
+            return;
+          }
+          localStorage.setItem("porto_token", data.accessToken);
+          window.location.href = "/dashboard";
+        } catch (err) {
+          errorMsg.textContent = "Network error. Please try again.";
+        }
+      });
+    </script>
+  </body>
+</html>

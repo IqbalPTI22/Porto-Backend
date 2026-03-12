@@ -3,6 +3,7 @@ import "dotenv/config";
 import { cors } from "@elysiajs/cors";
 import { node } from "@elysiajs/node";
 import { Elysia } from "elysia";
+import { authRoute } from "./routes/auth.route.js";
 import { dashboardRoute } from "./routes/dashboard.route.js";
 import { profileRoute } from "./routes/profile.route.js";
 import { projectsRoute } from "./routes/projects.route.js";
@@ -17,6 +18,7 @@ const app = new Elysia({ adapter: node() })
   )
   .use(dashboardRoute)
   .get("/health", () => ({ message: "Portfolio backend is running" }))
+  .use(authRoute)
   .use(projectsRoute)
   .use(skillsRoute)
   .use(profileRoute)

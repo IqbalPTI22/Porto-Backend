@@ -32,6 +32,16 @@ export const profile = pgTable("profile", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+export const adminUsers = pgTable("admin_users", {
+  id: serial("id").primaryKey(),
+  name: varchar("name", { length: 120 }).notNull(),
+  email: varchar("email", { length: 180 }).notNull().unique(),
+  passwordHash: text("password_hash").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 export type ProjectInsert = typeof projects.$inferInsert;
 export type SkillInsert = typeof skills.$inferInsert;
 export type ProfileInsert = typeof profile.$inferInsert;
+export type AdminUserInsert = typeof adminUsers.$inferInsert;

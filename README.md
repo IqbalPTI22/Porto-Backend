@@ -31,33 +31,40 @@
 
 ### Projects
 
-| Method | Endpoint      | Description       |
-| ------ | ------------- | ----------------- |
-| GET    | /projects     | List all projects |
-| GET    | /projects/:id | Get project by ID |
-| POST   | /projects     | Create project    |
-| PUT    | /projects/:id | Update project    |
-| DELETE | /projects/:id | Delete project    |
+| Method | Endpoint      | Description           |
+| ------ | ------------- | --------------------- |
+| GET    | /projects     | List all projects     |
+| GET    | /projects/:id | Get project by ID     |
+| POST   | /projects     | Create project (Auth) |
+| PUT    | /projects/:id | Update project (Auth) |
+| DELETE | /projects/:id | Delete project (Auth) |
 
 ### Skills
 
-| Method | Endpoint    | Description     |
-| ------ | ----------- | --------------- |
-| GET    | /skills     | List all skills |
-| GET    | /skills/:id | Get skill by ID |
-| POST   | /skills     | Create skill    |
-| PUT    | /skills/:id | Update skill    |
-| DELETE | /skills/:id | Delete skill    |
+| Method | Endpoint    | Description         |
+| ------ | ----------- | ------------------- |
+| GET    | /skills     | List all skills     |
+| GET    | /skills/:id | Get skill by ID     |
+| POST   | /skills     | Create skill (Auth) |
+| PUT    | /skills/:id | Update skill (Auth) |
+| DELETE | /skills/:id | Delete skill (Auth) |
 
 ### Profile
 
-| Method | Endpoint     | Description       |
-| ------ | ------------ | ----------------- |
-| GET    | /profile     | List all profiles |
-| GET    | /profile/:id | Get profile by ID |
-| POST   | /profile     | Create profile    |
-| PUT    | /profile/:id | Update profile    |
-| DELETE | /profile/:id | Delete profile    |
+| Method | Endpoint     | Description           |
+| ------ | ------------ | --------------------- |
+| GET    | /profile     | List all profiles     |
+| GET    | /profile/:id | Get profile by ID     |
+| POST   | /profile     | Create profile (Auth) |
+| PUT    | /profile/:id | Update profile (Auth) |
+| DELETE | /profile/:id | Delete profile (Auth) |
+
+### Authentication
+
+| Method | Endpoint    | Description                                   |
+| ------ | ----------- | --------------------------------------------- |
+| POST   | /auth/setup | One-time admin setup (requires `x-setup-key`) |
+| POST   | /auth/login | Admin login, returns JWT access token         |
 
 ---
 
@@ -90,6 +97,9 @@ npm install
   copy .env.example .env
   ```
 - Edit `.env` and set your `DATABASE_URL` to match your PostgreSQL instance.
+- Add security variables in `.env`:
+  - `JWT_SECRET` for signing JWT tokens
+  - `ADMIN_SETUP_KEY` for one-time admin account creation
 
 ### 4. Database Migration & Seeding
 
@@ -127,6 +137,12 @@ Server will run at [http://localhost:3000](http://localhost:3000) by default.
 ## ⚡ Frontend Integration
 
 CORS is enabled by default, so you can connect your React/Vite frontend directly to this API.
+
+For write operations (`POST`, `PUT`, `DELETE`), include:
+
+```http
+Authorization: Bearer <access-token>
+```
 
 ---
 

@@ -7,6 +7,7 @@ import {
   getSkillById,
   updateSkill,
 } from "../controllers/skills.controller.js";
+import { requireAuth } from "../middlewares/auth.middleware.js";
 
 const skillBodySchema = t.Object({
   name: t.String({ minLength: 1 }),
@@ -42,6 +43,7 @@ export const skillsRoute = new Elysia({ prefix: "/skills" })
       return result.body;
     },
     {
+      beforeHandle: requireAuth,
       body: skillBodySchema,
     },
   )
@@ -53,6 +55,7 @@ export const skillsRoute = new Elysia({ prefix: "/skills" })
       return result.body;
     },
     {
+      beforeHandle: requireAuth,
       params: t.Object({
         id: t.String(),
       }),
@@ -67,6 +70,7 @@ export const skillsRoute = new Elysia({ prefix: "/skills" })
       return result.body;
     },
     {
+      beforeHandle: requireAuth,
       params: t.Object({
         id: t.String(),
       }),
