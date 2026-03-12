@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:3000
 @projectId = 1
 @skillId = 1
-@profileId = 1
+@activityUpdateId = 1
 @setupKey = change-me
 @adminEmail = admin@example.com
 @adminPassword = change-me-strong-password
@@ -104,17 +104,14 @@ DELETE {{baseUrl}}/skills/{{skillId}}
 Authorization: Bearer {{authToken}}
 
 ### =========================
-### Profile CRUD
+### Profile (Singleton)
 ### =========================
 
-### Get all profile records
+### Get profile
 GET {{baseUrl}}/profile
 
-### Get profile by id
-GET {{baseUrl}}/profile/{{profileId}}
-
-### Create profile
-POST {{baseUrl}}/profile
+### Edit profile
+PUT {{baseUrl}}/profile
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
@@ -127,15 +124,39 @@ Authorization: Bearer {{authToken}}
   "avatarUrl": "https://example.com/avatar.jpg"
 }
 
-### Update profile
-PUT {{baseUrl}}/profile/{{profileId}}
+### =========================
+### Activity Updates CRUD
+### =========================
+
+### Get all activity updates
+GET {{baseUrl}}/activity-updates
+
+### Get activity update by id
+GET {{baseUrl}}/activity-updates/{{activityUpdateId}}
+
+### Create activity update
+POST {{baseUrl}}/activity-updates
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "headline": "Senior Full Stack Engineer"
+  "mediaType": "image",
+  "mediaUrl": "https://example.com/posts/post-image.jpg",
+  "title": "Company Gathering",
+  "caption": "Sharing highlights from our monthly activity.",
+  "activityTime": "2026-03-12T10:30:00.000Z",
+  "uploadedBy": "user"
 }
 
-### Delete profile
-DELETE {{baseUrl}}/profile/{{profileId}}
+### Update activity update
+PUT {{baseUrl}}/activity-updates/{{activityUpdateId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "title": "Company Gathering 2026"
+}
+
+### Delete activity update
+DELETE {{baseUrl}}/activity-updates/{{activityUpdateId}}
 Authorization: Bearer {{authToken}}

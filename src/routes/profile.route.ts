@@ -1,10 +1,7 @@
 // Defines REST endpoints for profile resources.
 import { Elysia, t } from "elysia";
 import {
-  createProfile,
-  deleteProfile,
-  getAllProfiles,
-  getProfileById,
+  getProfile,
   updateProfile,
 } from "../controllers/profile.controller.js";
 import { requireAuth } from "../middlewares/auth.middleware.js";
@@ -21,61 +18,20 @@ const profileBodySchema = t.Object({
 const profileUpdateBodySchema = t.Partial(profileBodySchema);
 
 export const profileRoute = new Elysia({ prefix: "/profile" })
-  .get("/", async () => {
-    const profiles = await getAllProfiles();
-    return profiles;
+  .get("/", async ({ set }) => {
+    const result = await getProfile();
+    set.status = result.status;
+    return result.body;
   })
-  .get(
-    "/:id",
-    async ({ params, set }) => {
-      const result = await getProfileById(params.id);
-      set.status = result.status;
-      return result.body;
-    },
-    {
-      params: t.Object({
-        id: t.String(),
-      }),
-    },
-  )
-  .post(
+  .put(
     "/",
     async ({ body, set }) => {
-      const result = await createProfile(body);
+      const result = await updateProfile(body);
       set.status = result.status;
       return result.body;
     },
     {
       beforeHandle: requireAuth,
-      body: profileBodySchema,
-    },
-  )
-  .put(
-    "/:id",
-    async ({ params, body, set }) => {
-      const result = await updateProfile(params.id, body);
-      set.status = result.status;
-      return result.body;
-    },
-    {
-      beforeHandle: requireAuth,
-      params: t.Object({
-        id: t.String(),
-      }),
       body: profileUpdateBodySchema,
-    },
-  )
-  .delete(
-    "/:id",
-    async ({ params, set }) => {
-      const result = await deleteProfile(params.id);
-      set.status = result.status;
-      return result.body;
-    },
-    {
-      beforeHandle: requireAuth,
-      params: t.Object({
-        id: t.String(),
-      }),
     },
   );

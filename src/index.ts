@@ -3,6 +3,7 @@ import "dotenv/config";
 import { cors } from "@elysiajs/cors";
 import { node } from "@elysiajs/node";
 import { Elysia } from "elysia";
+import { activityUpdatesRoute } from "./routes/activity-updates.route.js";
 import { authRoute } from "./routes/auth.route.js";
 import { dashboardRoute } from "./routes/dashboard.route.js";
 import { profileRoute } from "./routes/profile.route.js";
@@ -22,6 +23,7 @@ const app = new Elysia({ adapter: node() })
   .use(projectsRoute)
   .use(skillsRoute)
   .use(profileRoute)
+  .use(activityUpdatesRoute)
   .onError(({ code, error, set }) => {
     const errorDetails =
       error instanceof Error ? error.message : "Unexpected error";

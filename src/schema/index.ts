@@ -32,6 +32,18 @@ export const profile = pgTable("profile", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+export const activityUpdates = pgTable("activity_updates", {
+  id: serial("id").primaryKey(),
+  mediaType: varchar("media_type", { length: 20 }).notNull(),
+  mediaUrl: text("media_url").notNull(),
+  title: varchar("title", { length: 180 }).notNull(),
+  caption: text("caption").notNull(),
+  activityTime: timestamp("activity_time").defaultNow().notNull(),
+  uploadedBy: varchar("uploaded_by", { length: 120 }).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 export const adminUsers = pgTable("admin_users", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 120 }).notNull(),
@@ -44,4 +56,5 @@ export const adminUsers = pgTable("admin_users", {
 export type ProjectInsert = typeof projects.$inferInsert;
 export type SkillInsert = typeof skills.$inferInsert;
 export type ProfileInsert = typeof profile.$inferInsert;
+export type ActivityUpdateInsert = typeof activityUpdates.$inferInsert;
 export type AdminUserInsert = typeof adminUsers.$inferInsert;

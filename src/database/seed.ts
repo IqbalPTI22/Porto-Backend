@@ -1,7 +1,7 @@
 // Seeds initial portfolio data for admin dashboard development.
 import "dotenv/config";
 import { db } from "./db.js";
-import { profile, projects, skills } from "../schema/index.js";
+import { activityUpdates, profile, projects, skills } from "../schema/index.js";
 
 const now = new Date();
 
@@ -72,17 +72,43 @@ const seedProfile = [
   },
 ];
 
+const seedActivityUpdates = [
+  {
+    mediaType: "image" as const,
+    mediaUrl: "https://images.unsplash.com/photo-1517048676732-d65bc937f952",
+    title: "Workshop Session",
+    caption:
+      "Berbagi sesi hands-on untuk tim frontend tentang clean architecture.",
+    activityTime: now,
+    uploadedBy: "user",
+    updatedAt: now,
+  },
+  {
+    mediaType: "video" as const,
+    mediaUrl: "https://example.com/videos/product-demo.mp4",
+    title: "Product Demo",
+    caption: "Demo fitur baru dashboard kepada stakeholder.",
+    activityTime: now,
+    uploadedBy: "user",
+    updatedAt: now,
+  },
+];
+
 const runSeed = async () => {
   // Reset tables so seeding is repeatable during development.
   await db.delete(projects);
   await db.delete(skills);
   await db.delete(profile);
+  await db.delete(activityUpdates);
 
   await db.insert(projects).values(seedProjects);
   await db.insert(skills).values(seedSkills);
   await db.insert(profile).values(seedProfile);
+  await db.insert(activityUpdates).values(seedActivityUpdates);
 
-  console.log("Seed completed: projects, skills, and profile are populated.");
+  console.log(
+    "Seed completed: projects, skills, profile, and activity updates are populated.",
+  );
 };
 
 runSeed().catch((error) => {

@@ -10,7 +10,8 @@ This repository provides a ready-to-run backend for portfolio content management
 
 - Projects CRUD
 - Skills CRUD
-- Profile CRUD
+- Profile singleton (edit only)
+- Activity updates CRUD
 - Admin authentication (setup + login)
 - JWT-protected write endpoints
 - Simple web dashboard with login page
@@ -206,7 +207,8 @@ Frontend behavior:
 - `GET /skills`
 - `GET /skills/:id`
 - `GET /profile`
-- `GET /profile/:id`
+- `GET /activity-updates`
+- `GET /activity-updates/:id`
 
 #### Protected Write Endpoints
 
@@ -216,9 +218,10 @@ Frontend behavior:
 - `POST /skills`
 - `PUT /skills/:id`
 - `DELETE /skills/:id`
-- `POST /profile`
-- `PUT /profile/:id`
-- `DELETE /profile/:id`
+- `PUT /profile`
+- `POST /activity-updates`
+- `PUT /activity-updates/:id`
+- `DELETE /activity-updates/:id`
 
 #### Auth Endpoints
 
@@ -291,7 +294,8 @@ Repository ini adalah backend untuk mengelola data portfolio:
 
 - CRUD Projects
 - CRUD Skills
-- CRUD Profile
+- Profile tunggal (hanya edit)
+- CRUD Activity Update
 - Login admin (setup awal + login)
 - Endpoint tulis dilindungi JWT
 - Dashboard web sederhana + halaman login
@@ -354,11 +358,13 @@ Endpoint baca (public):
 
 - `GET /projects`, `GET /projects/:id`
 - `GET /skills`, `GET /skills/:id`
-- `GET /profile`, `GET /profile/:id`
+- `GET /profile`
+- `GET /activity-updates`, `GET /activity-updates/:id`
 
 Endpoint tulis (wajib token):
 
-- `POST/PUT/DELETE` untuk `projects`, `skills`, `profile`
+- `POST/PUT/DELETE` untuk `projects`, `skills`, `activity-updates`
+- `PUT /profile` untuk edit profile tunggal
 
 Endpoint auth:
 
